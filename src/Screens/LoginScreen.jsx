@@ -1,214 +1,208 @@
 import {
-	ImageBackground,
-	Keyboard,
-	KeyboardAvoidingView,
+	View,
 	StyleSheet,
-	Text,
 	TextInput,
+	Text,
+	SafeAreaView,
+	Platform,
+	ImageBackground,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
-	View,
-	Platform,
+	KeyboardAvoidingView,
+	Keyboard,
+	Alert,
 } from 'react-native';
-
-// import BgImagePath from '../images/photo-bg.jpg';
 import { useState } from 'react';
+import { useFonts } from 'expo-font';
+import image from '../../assets/photo_BG2x.png';
 
 export const LoginScreen = () => {
-	const [focusedInput, setFocusedInput] = useState('');
-	const [hidePassword, setHidePassword] = useState(true);
-	const [emailText, setEmailText] = useState('');
-	const [passwordText, setPasswordText] = useState('');
-	// const navigation = useNavigation();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [isShownPasword, setIsShownPasword] = useState(true);
+	const [isFocused, setIsFocused] = useState(null);
 
-	const submitData = {
-		emailText,
-		passwordText,
+	const showPassword = () => {
+		setIsShownPasword(prev => !prev);
 	};
 
-	const isEmpty = inputName => submitData[inputName] === '';
+	const [fontsLoaded] = useFonts({
+		Roboto: require('../../assets/fonts/Roboto-Regular.ttf'),
+	});
+	if (!fontsLoaded) {
+		return null;
+	}
 
-	const handleSubmit = () => {
-		if (!emailText) {
-			setEmailText('');
-			return;
-		} else if (!passwordText) {
-			setPasswordText('');
-			return;
-		}
-
-		console.log(submitData);
-		navigation.reset({
-			index: 0,
-			routes: [{ name: 'BottomTabNavigation' }],
-		});
-		setEmailText(null);
-		setPasswordText(null);
+	const onLogin = () => {
+		Alert.alert('FormData: ', `pass:  ${password}  email:  ${email}`);
+		setEmail('');
+		setPassword('');
 	};
 
 	return (
-		<ImageBackground style={styles.image}>
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<KeyboardAvoidingView
-					behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-					style={styles.screenWrapper}
-					keyboardVerticalOffset={-500}
-				>
-					<View style={styles.form}>
-						<Text style={styles.screenTitle}>Увійти</Text>
-						{isEmpty('emailText') && (
-							<Text style={styles.errorMessage}>
-								Email is a required field!
-							</Text>
-						)}
-						<TextInput
-							style={[
-								styles.input,
-								focusedInput === 'Email' && styles.activeInput,
-							]}
-							placeholder="Адреса електронної пошти"
-							onFocus={() => {
-								setFocusedInput('Email');
-							}}
-							onBlur={() => {
-								setFocusedInput(null);
-							}}
-							value={emailText}
-							onChangeText={setEmailText}
-						/>
-						{isEmpty('passwordText') && (
-							<Text style={styles.errorMessage}>
-								Password is a required field!
-							</Text>
-						)}
-						<View style={styles.passwordInputWrapper}>
-							<TextInput
-								secureTextEntry={hidePassword}
-								placeholder="Пароль"
-								style={[
-									styles.input,
-									focusedInput === 'Password' && styles.activeInput,
-								]}
-								onFocus={() => {
-									setFocusedInput('Password');
-								}}
-								onBlur={() => {
-									setFocusedInput(null);
-								}}
-								value={passwordText}
-								onChangeText={setPasswordText}
-							/>
-							<TouchableOpacity
-								style={styles.showPasswordButton}
-								onPress={() => {
-									setHidePassword(!hidePassword);
-								}}
-							>
-								<Text style={styles.showPasswordButtonText}>
-									{hidePassword ? 'Показати' : 'Приховати'}
-								</Text>
-							</TouchableOpacity>
-						</View>
-						<TouchableOpacity style={styles.logInButton} onPress={handleSubmit}>
-							<Text style={styles.logInButtonText}>Увійти</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							onPress={() => {
-								// navigation.navigate('Registration');
-							}}
+		<SafeAreaView>
+			<ImageBackground source={image} style={styles.image} />
+			<View style={styles.box}>
+				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+					<View style={styles.view}>
+						<KeyboardAvoidingView
+							behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+							// keyboardVerticalOffset={200}
 						>
-							<Text style={styles.registerLink}>
-								Немає акаунту? Зареєструватися
+							<Text style={styles.title}>Увійти</Text>
+							<TextInput
+								onFocus={() => setIsFocused('email')}
+								onBlur={() => setIsFocused(null)}
+								placeholder="Адреса електронної пошти"
+								style={[styles.input, isFocused === 'email' && styles.active]}
+								onChangeText={setEmail}
+								value={email}
+								inputMode="email"
+								placeholderTextColor="#BDBDBD"
+							/>
+							<View>
+								<TextInput
+									onFocus={() => setIsFocused('password')}
+									onBlur={() => setIsFocused(null)}
+									placeholder="Пароль"
+									style={[
+										styles.input,
+										isFocused === 'password' && styles.active,
+									]}
+									onChangeText={setPassword}
+									value={password}
+									textContentType="password"
+									placeholderTextColor="#BDBDBD"
+									secureTextEntry={isShownPasword}
+								/>
+								<TouchableOpacity
+									onPress={showPassword}
+									style={styles.passwordInputBtn}
+								>
+									<Text style={styles.showPassText}>
+										{isShownPasword ? 'Показати' : 'Приховати'}
+									</Text>
+								</TouchableOpacity>
+							</View>
+						</KeyboardAvoidingView>
+						<TouchableOpacity style={styles.btn} onPress={onLogin}>
+							<Text style={styles.btnText}>Увійти</Text>
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.bottomTextContainer}>
+							<Text
+								style={styles.bottomText}
+								onPress={() => Alert.alert('press Зареєструватися')}
+							>
+								Немає акаунту?{' '}
+								<Text style={styles.underlinedText}>Зареєструватися</Text>
 							</Text>
 						</TouchableOpacity>
 					</View>
-				</KeyboardAvoidingView>
-			</TouchableWithoutFeedback>
-		</ImageBackground>
+				</TouchableWithoutFeedback>
+			</View>
+		</SafeAreaView>
 	);
 };
 
-export default LoginScreen;
-
 const styles = StyleSheet.create({
-	screenWrapper: { flex: 1, width: '100%', justifyContent: 'flex-end' },
-	form: {
+	image: {
+		resizeMode: 'cover',
+		height: 900,
+		flex: 1,
+	},
+	box: {
+		height: '100%',
+		justifyContent: 'flex-end',
+		textAlign: 'center',
 		position: 'relative',
-		backgroundColor: '#fff',
-		alignItems: 'center',
+		flexDirection: 'column',
+	},
+	view: {
+		// height: 489,
+		backgroundColor: '#ffffff',
+		borderColor: '#ffffff',
+		borderWidth: 5,
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		paddingTop: 32,
-		paddingBottom: 144,
 		paddingLeft: 16,
 		paddingRight: 16,
+		paddingBottom: 43,
 	},
-	screenTitle: {
+	title: {
+		fontStyle: 'normal',
+		fontWeight: '500',
 		fontSize: 30,
-		fontWeight: 500,
 		lineHeight: 35,
-		marginBottom: 33,
-		fontFamily: 'Roboto_400Regular',
+		textAlign: 'center',
+		letterSpacing: 0.01,
+		color: '#212121',
+		marginBottom: 16,
+		fontFamily: 'Roboto',
 	},
 	input: {
-		width: 343,
 		height: 50,
+		marginTop: 16,
+		padding: 15,
+		fontSize: 16,
+		backgroundColor: '#F6F6F6',
 		borderWidth: 1,
 		borderColor: '#E8E8E8',
+		borderStyle: 'solid',
 		borderRadius: 8,
-		backgroundColor: '#f6f6f6',
-		marginBottom: 16,
-		padding: 16,
-		fontFamily: 'Roboto_400Regular',
-	},
-	passwordInputWrapper: {
 		position: 'relative',
-		marginBottom: 43,
+		fontWeight: '400',
 	},
-	showPasswordButton: {
+	active: {
+		backgroundColor: '#FFFFFF',
+		borderColor: '#FF6C00',
+		color: '#212121',
+	},
+	showPassText: {
+		fontFamily: 'Roboto',
+		fontSize: 16,
+		color: '#1B4371',
+	},
+	passwordInputBtn: {
+		height: 50,
+		width: 100,
 		position: 'absolute',
 		top: 16,
-		right: 16,
+		right: 0,
+		textAlign: 'center',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
-	showPasswordButtonText: {
-		fontSize: 16,
-		color: '#1B4371',
-		fontFamily: 'Roboto_400Regular',
-	},
-	logInButton: {
-		width: 343,
+	btn: {
+		backgroundColor: '#FF6C00',
+		borderRadius: 100,
 		paddingTop: 16,
 		paddingBottom: 16,
-		marginBottom: 16,
-		borderRadius: 100,
-		backgroundColor: '#FF6C00',
+		paddingLeft: 32,
+		paddingRight: 32,
+		marginTop: 43,
+		display: 'flex',
+		alignItems: 'center',
 	},
-	logInButtonText: {
-		textAlign: 'center',
-		lineHeight: 19,
-		fontSize: 16,
-		color: '#ffffff',
-		fontFamily: 'Roboto_400Regular',
-	},
-	registerLink: {
+	btnText: {
+		fontWeight: '400',
 		fontSize: 16,
 		lineHeight: 19,
+		color: '#FFFFFF',
+	},
+
+	bottomText: {
+		paddingTop: 16,
 		color: '#1B4371',
-		fontFamily: 'Roboto_400Regular',
-		flexDirection: 'row',
-		alignItems: 'flex-end',
+		fontStyle: 'normal',
+		fontWeight: '400',
+		fontSize: 16,
+		lineHeight: 19,
+		textAlign: 'center',
+		fontFamily: 'Roboto',
 	},
-	activeInput: {
-		borderColor: '#FF6C00',
-		backgroundColor: '#ffffff',
-	},
-	errorMessage: {
-		color: '#FF6C00',
-		marginBottom: 5,
-	},
-	image: {
-		flex: 1,
-		resizeMode: 'cover',
-		width: '100%',
+	underlinedText: {
+		textDecorationLine: 'underline',
 	},
 });
