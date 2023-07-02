@@ -16,6 +16,8 @@ import { useState, useEffect } from 'react';
 import image from '../../assets/photo_BG2x.png';
 import { useFonts } from 'expo-font';
 
+import PhotoPicker from '../Components/index';
+
 export const RegistrationScreen = () => {
 	const [login, setLogin] = useState('');
 	const [email, setEmail] = useState('');
