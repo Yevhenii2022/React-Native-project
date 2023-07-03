@@ -14,9 +14,9 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import image from '../../assets/photo_BG2x.png';
+import userPhoto from '../../assets/userPhoto.png';
 import { useFonts } from 'expo-font';
-
-import PhotoPicker from '../Components/index';
+import { PhotoPicker, PlusStyledButton } from '../Components/index';
 
 export const RegistrationScreen = () => {
 	const [login, setLogin] = useState('');
@@ -25,7 +25,7 @@ export const RegistrationScreen = () => {
 	const [isShownPasword, setIsShownPasword] = useState(true);
 	const [isFocused, setIsFocused] = useState(null);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [photo, setPhoto] = useState(null);
+	const [photo, setPhoto] = useState(userPhoto);
 	const [isBtnActive, setIsBtnActive] = useState(false);
 
 	useEffect(() => {
@@ -62,7 +62,9 @@ export const RegistrationScreen = () => {
 	return (
 		<SafeAreaView style={styles.base}>
 			<ImageBackground source={image} style={styles.image} />
-
+			{modalVisible && (
+				<PhotoPicker showModal={showModal} setPhoto={setPhoto} />
+			)}
 			<View style={styles.box}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={styles.view}>
@@ -75,6 +77,10 @@ export const RegistrationScreen = () => {
 								{photo && (
 									<ImageBackground source={photo} style={styles.photo} />
 								)}
+								<PlusStyledButton
+									isActive={isBtnActive}
+									onPress={() => (photo ? setPhoto(null) : showModal())}
+								/>
 							</View>
 
 							<Text style={styles.title}>Реєстрація</Text>
@@ -117,7 +123,9 @@ export const RegistrationScreen = () => {
 									onPress={showPassword}
 									style={styles.passwordInputBtn}
 								>
-									<Text style={styles.showPassText}>Показати</Text>
+									<Text style={styles.showPassText}>
+										{isShownPasword ? 'Показати' : 'Приховати'}
+									</Text>
 								</TouchableOpacity>
 							</View>
 						</KeyboardAvoidingView>

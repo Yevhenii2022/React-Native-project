@@ -1,7 +1,5 @@
-// import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { LoginScreen, RegistrationScreen } from './src/Screens';
-// import { useFonts } from 'expo-font';
 
 export default function App() {
 	return (
