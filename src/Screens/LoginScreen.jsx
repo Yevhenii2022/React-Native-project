@@ -40,74 +40,74 @@ export const LoginScreen = () => {
 	};
 
 	return (
-		<SafeAreaView>
-			<ImageBackground source={image} style={styles.image} />
-			<View style={styles.box}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={styles.view}>
-						<KeyboardAvoidingView
-							behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-							// keyboardVerticalOffset={200}
-						>
-							<Text style={styles.title}>Увійти</Text>
-							<TextInput
-								onFocus={() => setIsFocused('email')}
-								onBlur={() => setIsFocused(null)}
-								placeholder="Адреса електронної пошти"
-								style={[styles.input, isFocused === 'email' && styles.active]}
-								onChangeText={setEmail}
-								value={email}
-								inputMode="email"
-								placeholderTextColor="#BDBDBD"
-							/>
-							<View>
-								<TextInput
-									onFocus={() => setIsFocused('password')}
-									onBlur={() => setIsFocused(null)}
-									placeholder="Пароль"
-									style={[
-										styles.input,
-										isFocused === 'password' && styles.active,
-									]}
-									onChangeText={setPassword}
-									value={password}
-									textContentType="password"
-									placeholderTextColor="#BDBDBD"
-									secureTextEntry={isShownPasword}
-								/>
-								<TouchableOpacity
-									onPress={showPassword}
-									style={styles.passwordInputBtn}
-								>
-									<Text style={styles.showPassText}>
-										{isShownPasword ? 'Показати' : 'Приховати'}
-									</Text>
-								</TouchableOpacity>
-							</View>
-						</KeyboardAvoidingView>
-						<TouchableOpacity style={styles.btn} onPress={onLogin}>
-							<Text style={styles.btnText}>Увійти</Text>
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.bottomTextContainer}>
-							<Text
-								style={styles.bottomText}
-								onPress={() => Alert.alert('press Зареєструватися')}
+		<ImageBackground source={image} style={styles.image}>
+			<SafeAreaView>
+				<View style={styles.box}>
+					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+						<View style={styles.view}>
+							<KeyboardAvoidingView
+								behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+								// keyboardVerticalOffset={200}
 							>
-								Немає акаунту?{' '}
-								<Text style={styles.underlinedText}>Зареєструватися</Text>
-							</Text>
-						</TouchableOpacity>
-					</View>
-				</TouchableWithoutFeedback>
-			</View>
-		</SafeAreaView>
+								<Text style={styles.title}>Увійти</Text>
+								<TextInput
+									onFocus={() => setIsFocused('email')}
+									onBlur={() => setIsFocused(null)}
+									placeholder="Адреса електронної пошти"
+									style={[styles.input, isFocused === 'email' && styles.active]}
+									onChangeText={setEmail}
+									value={email}
+									inputMode="email"
+									placeholderTextColor="#BDBDBD"
+								/>
+								<View>
+									<TextInput
+										onFocus={() => setIsFocused('password')}
+										onBlur={() => setIsFocused(null)}
+										placeholder="Пароль"
+										style={[
+											styles.input,
+											isFocused === 'password' && styles.active,
+										]}
+										onChangeText={setPassword}
+										value={password}
+										textContentType="password"
+										placeholderTextColor="#BDBDBD"
+										secureTextEntry={isShownPasword}
+									/>
+									<TouchableOpacity
+										onPress={showPassword}
+										style={styles.passwordInputBtn}
+									>
+										<Text style={styles.showPassText}>
+											{isShownPasword ? 'Показати' : 'Приховати'}
+										</Text>
+									</TouchableOpacity>
+								</View>
+							</KeyboardAvoidingView>
+							<TouchableOpacity style={styles.btn} onPress={onLogin}>
+								<Text style={styles.btnText}>Увійти</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.bottomTextContainer}>
+								<Text
+									style={styles.bottomText}
+									onPress={() => Alert.alert('press Зареєструватися')}
+								>
+									Немає акаунту?{' '}
+									<Text style={styles.underlinedText}>Зареєструватися</Text>
+								</Text>
+							</TouchableOpacity>
+						</View>
+					</TouchableWithoutFeedback>
+				</View>
+			</SafeAreaView>
+		</ImageBackground>
 	);
 };
 
 const styles = StyleSheet.create({
 	image: {
 		resizeMode: 'cover',
-		height: 900,
 		flex: 1,
 	},
 	box: {
@@ -120,13 +120,10 @@ const styles = StyleSheet.create({
 	view: {
 		// height: 489,
 		backgroundColor: '#ffffff',
-		borderColor: '#ffffff',
-		borderWidth: 5,
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		paddingTop: 32,
-		paddingLeft: 16,
-		paddingRight: 16,
+		paddingHorizontal: 16,
 		paddingBottom: 43,
 	},
 	title: {
@@ -177,10 +174,8 @@ const styles = StyleSheet.create({
 	btn: {
 		backgroundColor: '#FF6C00',
 		borderRadius: 100,
-		paddingTop: 16,
-		paddingBottom: 16,
-		paddingLeft: 32,
-		paddingRight: 32,
+		paddingVertical: 16,
+		paddingHorizontal: 32,
 		marginTop: 43,
 		display: 'flex',
 		alignItems: 'center',

@@ -9,7 +9,7 @@ import {
 	Pressable,
 } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
-import { ModalWindow } from './index';
+import { ModalWindow } from './ModalWindow';
 
 export const PhotoPicker = ({ showModal, setPhoto }) => {
 	const [response, setResponse] = useState(null);

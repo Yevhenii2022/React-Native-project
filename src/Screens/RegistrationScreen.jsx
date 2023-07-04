@@ -16,7 +16,8 @@ import { useState, useEffect } from 'react';
 import image from '../../assets/photo_BG2x.png';
 import userPhoto from '../../assets/userPhoto.png';
 import { useFonts } from 'expo-font';
-import { PhotoPicker, PlusStyledButton } from '../Components/index';
+import { PhotoPicker } from '../Components/PhotoPicker';
+import { PlusStyledButton } from '../Components/PlusStyledButton';
 
 export const RegistrationScreen = () => {
 	const [login, setLogin] = useState('');
@@ -60,88 +61,89 @@ export const RegistrationScreen = () => {
 	};
 
 	return (
-		<SafeAreaView style={styles.base}>
-			<ImageBackground source={image} style={styles.image} />
-			{modalVisible && (
-				<PhotoPicker showModal={showModal} setPhoto={setPhoto} />
-			)}
-			<View style={styles.box}>
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<View style={styles.view}>
-						<KeyboardAvoidingView
-							style={styles.keyView}
-							behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-							keyboardVerticalOffset={800}
-						>
-							<View style={styles.userPhoto}>
-								{photo && (
-									<ImageBackground source={photo} style={styles.photo} />
-								)}
-								<PlusStyledButton
-									isActive={isBtnActive}
-									onPress={() => (photo ? setPhoto(null) : showModal())}
-								/>
-							</View>
+		<ImageBackground source={image} style={styles.image}>
+			<SafeAreaView style={styles.base}>
+				{modalVisible && (
+					<PhotoPicker showModal={showModal} setPhoto={setPhoto} />
+				)}
+				<View style={styles.box}>
+					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+						<View style={styles.view}>
+							<KeyboardAvoidingView
+								style={styles.keyView}
+								behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+								keyboardVerticalOffset={800}
+							>
+								<View style={styles.userPhoto}>
+									{photo && (
+										<ImageBackground source={photo} style={styles.photo} />
+									)}
+									<PlusStyledButton
+										isActive={isBtnActive}
+										onPress={() => (photo ? setPhoto(null) : showModal())}
+									/>
+								</View>
 
-							<Text style={styles.title}>Реєстрація</Text>
-							<TextInput
-								onFocus={() => setIsFocused('login')}
-								onBlur={() => setIsFocused(null)}
-								style={[styles.input, isFocused === 'login' && styles.active]}
-								placeholder="Логін"
-								onChangeText={setLogin}
-								value={login}
-								inputMode="text"
-								placeholderTextColor="#BDBDBD"
-							/>
-							<TextInput
-								onFocus={() => setIsFocused('email')}
-								onBlur={() => setIsFocused(null)}
-								placeholder="Адреса електронної пошти"
-								style={[styles.input, isFocused === 'email' && styles.active]}
-								onChangeText={setEmail}
-								value={email}
-								inputMode="email"
-								placeholderTextColor="#BDBDBD"
-							/>
-							<View>
+								<Text style={styles.title}>Реєстрація</Text>
 								<TextInput
-									onFocus={() => setIsFocused('password')}
+									onFocus={() => setIsFocused('login')}
 									onBlur={() => setIsFocused(null)}
-									placeholder="Пароль"
-									style={[
-										styles.input,
-										isFocused === 'password' && styles.active,
-									]}
-									onChangeText={setPassword}
-									value={password}
-									textContentType="password"
+									style={[styles.input, isFocused === 'login' && styles.active]}
+									placeholder="Логін"
+									onChangeText={setLogin}
+									value={login}
+									inputMode="text"
 									placeholderTextColor="#BDBDBD"
-									secureTextEntry={isShownPasword}
 								/>
-								<TouchableOpacity
-									onPress={showPassword}
-									style={styles.passwordInputBtn}
-								>
-									<Text style={styles.showPassText}>
-										{isShownPasword ? 'Показати' : 'Приховати'}
-									</Text>
-								</TouchableOpacity>
-							</View>
-						</KeyboardAvoidingView>
-						<TouchableOpacity style={styles.btn} onPress={onLogin}>
-							<Text style={styles.btnText}>Зареєстуватися</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.bottomTextContainer}
-							onPress={() => navigation.navigate('Login')}
-						>
-							<Text style={styles.bottomText}>Вже є акаунт? Увійти</Text>
-						</TouchableOpacity>
-					</View>
-				</TouchableWithoutFeedback>
-			</View>
-		</SafeAreaView>
+								<TextInput
+									onFocus={() => setIsFocused('email')}
+									onBlur={() => setIsFocused(null)}
+									placeholder="Адреса електронної пошти"
+									style={[styles.input, isFocused === 'email' && styles.active]}
+									onChangeText={setEmail}
+									value={email}
+									inputMode="email"
+									placeholderTextColor="#BDBDBD"
+								/>
+								<View>
+									<TextInput
+										onFocus={() => setIsFocused('password')}
+										onBlur={() => setIsFocused(null)}
+										placeholder="Пароль"
+										style={[
+											styles.input,
+											isFocused === 'password' && styles.active,
+										]}
+										onChangeText={setPassword}
+										value={password}
+										textContentType="password"
+										placeholderTextColor="#BDBDBD"
+										secureTextEntry={isShownPasword}
+									/>
+									<TouchableOpacity
+										onPress={showPassword}
+										style={styles.passwordInputBtn}
+									>
+										<Text style={styles.showPassText}>
+											{isShownPasword ? 'Показати' : 'Приховати'}
+										</Text>
+									</TouchableOpacity>
+								</View>
+							</KeyboardAvoidingView>
+							<TouchableOpacity style={styles.btn} onPress={onLogin}>
+								<Text style={styles.btnText}>Зареєстуватися</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.bottomTextContainer}
+								onPress={() => navigation.navigate('Login')}
+							>
+								<Text style={styles.bottomText}>Вже є акаунт? Увійти</Text>
+							</TouchableOpacity>
+						</View>
+					</TouchableWithoutFeedback>
+				</View>
+			</SafeAreaView>
+		</ImageBackground>
 	);
 };
 
@@ -151,7 +153,6 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		resizeMode: 'cover',
-		height: 900,
 		flex: 1,
 	},
 
@@ -164,13 +165,10 @@ const styles = StyleSheet.create({
 	},
 	view: {
 		backgroundColor: '#ffffff',
-		borderColor: '#ffffff',
-		borderWidth: 5,
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		paddingTop: 92,
-		paddingLeft: 16,
-		paddingRight: 16,
+		paddingHorizontal: 16,
 		paddingBottom: 43,
 	},
 	userPhoto: {
@@ -242,10 +240,8 @@ const styles = StyleSheet.create({
 	btn: {
 		backgroundColor: '#FF6C00',
 		borderRadius: 100,
-		paddingTop: 16,
-		paddingBottom: 16,
-		paddingLeft: 32,
-		paddingRight: 32,
+		paddingVertical: 16,
+		paddingHorizontal: 32,
 		marginTop: 43,
 		display: 'flex',
 		alignItems: 'center',
