@@ -5,8 +5,8 @@ import { RegistrationScreen } from './src/Screens/RegistrationScreen';
 export default function App() {
 	return (
 		<View style={styles.container}>
-			<LoginScreen />
-			{/* <RegistrationScreen /> */}
+			{/* <LoginScreen /> */}
+			<RegistrationScreen />
 		</View>
 	);
 }

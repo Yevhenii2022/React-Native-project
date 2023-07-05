@@ -6,6 +6,7 @@ import {
 	SafeAreaView,
 	Platform,
 	ImageBackground,
+	Image,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
 	KeyboardAvoidingView,
@@ -75,9 +76,7 @@ export const RegistrationScreen = () => {
 								keyboardVerticalOffset={800}
 							>
 								<View style={styles.userPhoto}>
-									{photo && (
-										<ImageBackground source={photo} style={styles.photo} />
-									)}
+									{photo && <Image source={photo} style={styles.photo} />}
 									<PlusStyledButton
 										isActive={isBtnActive}
 										onPress={() => (photo ? setPhoto(null) : showModal())}
@@ -177,8 +176,8 @@ const styles = StyleSheet.create({
 		borderRadius: 16,
 		backgroundColor: '#F6F6F6',
 		position: 'absolute',
-		top: -160,
-		left: '46%',
+		top: -152,
+		left: '47%',
 		transform: [{ translateX: -50 }],
 	},
 	photo: {
