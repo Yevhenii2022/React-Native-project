@@ -47,7 +47,7 @@ export const LoginScreen = () => {
 						<View style={styles.view}>
 							<KeyboardAvoidingView
 								behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-								// keyboardVerticalOffset={200}
+								keyboardVerticalOffset={300}
 							>
 								<Text style={styles.title}>Увійти</Text>
 								<TextInput
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 	},
 	view: {
-		// height: 489,
+		height: 489,
 		backgroundColor: '#ffffff',
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,

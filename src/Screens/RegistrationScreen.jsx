@@ -51,7 +51,7 @@ export const RegistrationScreen = () => {
 		setIsShownPasword(prev => !prev);
 	};
 
-	const onLogin = () => {
+	const onRegistration = () => {
 		Alert.alert(
 			'FormData',
 			`Login: ${login}  Password: ${password} Email: ${email}`,
@@ -73,7 +73,7 @@ export const RegistrationScreen = () => {
 							<KeyboardAvoidingView
 								style={styles.keyView}
 								behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-								keyboardVerticalOffset={800}
+								keyboardVerticalOffset={0}
 							>
 								<View style={styles.userPhoto}>
 									{photo && <Image source={photo} style={styles.photo} />}
@@ -129,7 +129,7 @@ export const RegistrationScreen = () => {
 									</TouchableOpacity>
 								</View>
 							</KeyboardAvoidingView>
-							<TouchableOpacity style={styles.btn} onPress={onLogin}>
+							<TouchableOpacity style={styles.btn} onPress={onRegistration}>
 								<Text style={styles.btnText}>Зареєстуватися</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 	},
 	view: {
+		height: 549,
 		backgroundColor: '#ffffff',
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
