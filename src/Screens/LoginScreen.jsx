@@ -41,13 +41,13 @@ export const LoginScreen = () => {
 
 	return (
 		<ImageBackground source={image} style={styles.image}>
-			<SafeAreaView>
-				<View style={styles.box}>
-					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+				<SafeAreaView>
+					<View style={styles.box}>
 						<View style={styles.view}>
 							<KeyboardAvoidingView
 								behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-								keyboardVerticalOffset={300}
+								keyboardVerticalOffset={0}
 							>
 								<Text style={styles.title}>Увійти</Text>
 								<TextInput
@@ -98,9 +98,9 @@ export const LoginScreen = () => {
 								</Text>
 							</TouchableOpacity>
 						</View>
-					</TouchableWithoutFeedback>
-				</View>
-			</SafeAreaView>
+					</View>
+				</SafeAreaView>
+			</TouchableWithoutFeedback>
 		</ImageBackground>
 	);
 };
@@ -118,13 +118,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 	},
 	view: {
-		height: 489,
 		backgroundColor: '#ffffff',
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		paddingTop: 32,
 		paddingHorizontal: 16,
-		paddingBottom: 43,
+		paddingBottom: 144,
 	},
 	title: {
 		fontStyle: 'normal',

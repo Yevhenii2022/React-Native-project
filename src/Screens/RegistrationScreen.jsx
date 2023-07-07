@@ -67,8 +67,8 @@ export const RegistrationScreen = () => {
 				{modalVisible && (
 					<PhotoPicker showModal={showModal} setPhoto={setPhoto} />
 				)}
-				<View style={styles.box}>
-					<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+					<View style={styles.box}>
 						<View style={styles.view}>
 							<KeyboardAvoidingView
 								style={styles.keyView}
@@ -82,7 +82,6 @@ export const RegistrationScreen = () => {
 										onPress={() => (photo ? setPhoto(null) : showModal())}
 									/>
 								</View>
-
 								<Text style={styles.title}>Реєстрація</Text>
 								<TextInput
 									onFocus={() => setIsFocused('login')}
@@ -104,7 +103,7 @@ export const RegistrationScreen = () => {
 									inputMode="email"
 									placeholderTextColor="#BDBDBD"
 								/>
-								<View>
+								<View style={styles.inputPassword}>
 									<TextInput
 										onFocus={() => setIsFocused('password')}
 										onBlur={() => setIsFocused(null)}
@@ -139,8 +138,8 @@ export const RegistrationScreen = () => {
 								<Text style={styles.bottomText}>Вже є акаунт? Увійти</Text>
 							</TouchableOpacity>
 						</View>
-					</TouchableWithoutFeedback>
-				</View>
+					</View>
+				</TouchableWithoutFeedback>
 			</SafeAreaView>
 		</ImageBackground>
 	);
@@ -163,13 +162,15 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 	},
 	view: {
-		height: 549,
 		backgroundColor: '#ffffff',
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		paddingTop: 92,
 		paddingHorizontal: 16,
-		paddingBottom: 43,
+		paddingBottom: 78,
+	},
+	keyView: {
+		alignItems: 'center',
 	},
 	userPhoto: {
 		width: 120,
@@ -178,15 +179,14 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F6F6F6',
 		position: 'absolute',
 		top: -152,
-		left: '47%',
-		transform: [{ translateX: -50 }],
+		// left: '47%',
+		// transform: [{ translateX: -50 }],
 	},
 	photo: {
 		resizeMode: 'contain',
 		width: 120,
 		height: 120,
 		borderRadius: 16,
-		overflow: 'hidden',
 	},
 	takePhotoOut: {
 		position: 'absolute',
@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
 	},
 
 	input: {
+		width: '100%',
 		height: 50,
 		marginTop: 16,
 		padding: 15,
@@ -225,6 +226,9 @@ const styles = StyleSheet.create({
 		borderColor: '#FF6C00',
 		color: '#212121',
 	},
+
+	inputPassword: { width: '100%' },
+
 	title: {
 		fontStyle: 'normal',
 		fontWeight: '500',
