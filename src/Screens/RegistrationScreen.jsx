@@ -14,12 +14,14 @@ import {
 	Alert,
 } from 'react-native';
 import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import image from '../../assets/photo_BG2x.png';
 import { useFonts } from 'expo-font';
 import { PlusStyledButton } from '../Components/PlusStyledButton';
 
 export const RegistrationScreen = () => {
+	const navigation = useNavigation();
 	const [login, setLogin] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -70,6 +72,7 @@ export const RegistrationScreen = () => {
 		setLogin('');
 		setPassword('');
 		setEmail('');
+		navigation.replace('Home');
 	};
 
 	return (

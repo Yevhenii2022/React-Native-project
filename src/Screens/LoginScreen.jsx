@@ -13,10 +13,12 @@ import {
 	Alert,
 } from 'react-native';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import image from '../../assets/photo_BG2x.png';
 
 export const LoginScreen = () => {
+	const navigation = useNavigation();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isShownPasword, setIsShownPasword] = useState(true);
@@ -37,6 +39,7 @@ export const LoginScreen = () => {
 		Alert.alert('FormData: ', `pass:  ${password}  email:  ${email}`);
 		setEmail('');
 		setPassword('');
+		navigation.replace('Home');
 	};
 
 	return (
@@ -91,7 +94,7 @@ export const LoginScreen = () => {
 							<TouchableOpacity style={styles.bottomTextContainer}>
 								<Text
 									style={styles.bottomText}
-									onPress={() => Alert.alert('press Зареєструватися')}
+									onPress={() => navigation.replace('Registration')}
 								>
 									Немає акаунту?{' '}
 									<Text style={styles.underlinedText}>Зареєструватися</Text>
