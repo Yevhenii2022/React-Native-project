@@ -14,10 +14,9 @@ import {
 	Alert,
 } from 'react-native';
 import { useState, useEffect } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import image from '../../assets/photo_BG2x.png';
-import userPhoto from '../../assets/userPhoto.png';
 import { useFonts } from 'expo-font';
-import { PhotoPicker } from '../Components/PhotoPicker';
 import { PlusStyledButton } from '../Components/PlusStyledButton';
 
 export const RegistrationScreen = () => {
@@ -26,14 +25,26 @@ export const RegistrationScreen = () => {
 	const [password, setPassword] = useState('');
 	const [isShownPasword, setIsShownPasword] = useState(true);
 	const [isFocused, setIsFocused] = useState(null);
-	const [modalVisible, setModalVisible] = useState(false);
-	const [photo, setPhoto] = useState(userPhoto);
+	const [photo, setPhoto] = useState(null);
 	const [isBtnActive, setIsBtnActive] = useState(false);
 
 	useEffect(() => {
 		if (photo) setIsBtnActive(true);
 		else setIsBtnActive(false);
 	}, [photo]);
+
+	const pickImage = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+		});
+
+		if (!result.canceled) {
+			setPhoto(result.assets[0].uri);
+		}
+	};
 
 	const [fontsLoaded] = useFonts({
 		Roboto: require('../../assets/fonts/Roboto-Regular.ttf'),
@@ -43,8 +54,8 @@ export const RegistrationScreen = () => {
 		return null;
 	}
 
-	const showModal = () => {
-		setModalVisible(prev => !prev);
+	const handlePressStyledButton = () => {
+		photo ? setPhoto(null) : pickImage();
 	};
 
 	const showPassword = () => {
@@ -64,9 +75,6 @@ export const RegistrationScreen = () => {
 	return (
 		<ImageBackground source={image} style={styles.image}>
 			<SafeAreaView style={styles.base}>
-				{modalVisible && (
-					<PhotoPicker showModal={showModal} setPhoto={setPhoto} />
-				)}
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={styles.box}>
 						<View style={styles.view}>
@@ -76,10 +84,12 @@ export const RegistrationScreen = () => {
 								keyboardVerticalOffset={0}
 							>
 								<View style={styles.userPhoto}>
-									{photo && <Image source={photo} style={styles.photo} />}
+									{photo && (
+										<Image source={{ uri: photo }} style={styles.photo} />
+									)}
 									<PlusStyledButton
 										isActive={isBtnActive}
-										onPress={() => (photo ? setPhoto(null) : showModal())}
+										onPress={handlePressStyledButton}
 									/>
 								</View>
 								<Text style={styles.title}>Реєстрація</Text>
