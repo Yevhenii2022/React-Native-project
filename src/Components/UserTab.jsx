@@ -19,10 +19,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
 		gap: 8,
-		width: 171,
-		height: 60,
 	},
 	photo: {
 		width: 60,

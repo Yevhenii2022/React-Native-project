@@ -10,7 +10,7 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import image from '../../assets/photo_BG2x.png';
-// import UserPhoto from '../components/UserPhoto';
+import { UserPhoto } from '../Components/UserPhoto';
 import { StoryCard } from '../Components/StoryCard';
 
 export const ProfileScreen = () => {
@@ -21,7 +21,9 @@ export const ProfileScreen = () => {
 				<ScrollView>
 					<View style={styles.view}>
 						<View>
-							{/* <UserPhoto /> */}
+							<View style={styles.viewUserPhoto}>
+								<UserPhoto />
+							</View>
 							<ExitBtn />
 							<Text style={styles.Name}>Natali Romanova</Text>
 						</View>
@@ -64,7 +66,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		letterSpacing: 0.01,
 		color: '#212121',
-
 		marginTop: -32,
 	},
 	view: {
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 43,
 		gap: 32,
 	},
+	viewUserPhoto: { alignItems: 'center' },
 	exitBtn: {
 		position: 'absolute',
 		right: 0,

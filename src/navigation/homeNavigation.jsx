@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F6F6F6',
 	},
 	focusedOverlay: {
-		backgroundColor: '#FF6C00', //orange
+		backgroundColor: '#FF6C00',
 	},
 	plusIcon: {
 		color: '#212121cc',
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
 		color: 'white',
 	},
 
-	icon: { color: '#212121cc' }, //grey
+	icon: { color: '#212121cc' },
 	focusedIcon: {
 		color: '#FF6C00',
 	},

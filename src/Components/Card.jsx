@@ -26,9 +26,7 @@ export const Card = () => {
 					onPress={() => navigation.navigate('Map')}
 				>
 					<Feather name="map-pin" size={24} style={styles.pinIcon} />
-					<Text style={styles.barRightText}>
-						Ivano-Frankivs'k Region, Ukraine
-					</Text>
+					<Text style={styles.barRightText}>Ivano-Frankivs'k, Ukraine</Text>
 				</TouchableOpacity>
 			</View>
 		</TouchableOpacity>
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 	barLeft: {
 		display: 'flex',
@@ -72,9 +71,10 @@ const styles = StyleSheet.create({
 		lineHeight: 19,
 	},
 	barRight: {
+		marginLeft: 8,
 		display: 'flex',
 		flexDirection: 'row',
-		alignItems: 'flex-end',
+		alignItems: 'center',
 	},
 	barRightText: {
 		color: '#212121',
@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 19,
 		textDecorationLine: 'underline',
+		alignItems: 'flex-start',
+		justifyContent: 'flex-start',
 	},
 	pinIcon: {
 		marginRight: 6,
