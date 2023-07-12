@@ -1,14 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { RegistrationScreen } from '../Screens/RegistrationScreen';
-import { LoginScreen } from '../Screens/LoginScreen';
-import { CommentsScreen } from '../Screens/CommentsScreen';
-import { HomeNavigations } from './HomeNavigations';
-import { MapScreen } from '../Screens/MapScreen';
+import RegistrationScreen from '../Screens/RegistrationScreen';
+import LoginScreen from '../Screens/LoginScreen';
+import CommentsScreen from '../Screens/CommentsScreen';
+import HomeNavigations from './HomeNavigations';
+import MapScreen from '../Screens/MapScreen';
 import { CreateHeader } from '../Components/CreateHeader';
 
 const MainStack = createStackNavigator();
 
-export const MainNavigations = () => (
+const MainNavigations = () => (
 	<MainStack.Navigator
 		initialRouteName="Login"
 		screenOptions={{ headerShown: false }}
@@ -52,3 +52,5 @@ const mapScreenHeaderOption = {
 		/>
 	),
 };
+
+export default MainNavigations;

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-export const PlusStyledButton = ({ onPress, isActive = false }) => {
+const PlusStyledButton = ({ onPress, isActive = false }) => {
 	return (
 		<TouchableOpacity
 			style={[styles.btnFrame, isActive && styles.btnFrameActive]}
@@ -16,6 +16,8 @@ export const PlusStyledButton = ({ onPress, isActive = false }) => {
 		</TouchableOpacity>
 	);
 };
+
+export default PlusStyledButton;
 
 const styles = StyleSheet.create({
 	btnFrame: {

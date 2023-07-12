@@ -10,10 +10,10 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import image from '../../assets/photo_BG2x.png';
-import { UserPhoto } from '../Components/UserPhoto';
-import { StoryCard } from '../Components/StoryCard';
+import UserPhoto from '../Components/UserPhoto';
+import StoryCard from '../Components/StoryCard';
 
-export const ProfileScreen = () => {
+const ProfileScreen = () => {
 	return (
 		<SafeAreaView>
 			<ImageBackground source={image} style={styles.image} />
@@ -51,6 +51,8 @@ function ExitBtn() {
 		</TouchableOpacity>
 	);
 }
+
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
 	image: {

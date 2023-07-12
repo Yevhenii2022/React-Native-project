@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-export const UserTab = ({ email, name, photo }) => {
+const UserTab = ({ email, name, photo }) => {
 	return (
 		<TouchableOpacity style={styles.container}>
 			<Image
@@ -14,6 +14,8 @@ export const UserTab = ({ email, name, photo }) => {
 		</TouchableOpacity>
 	);
 };
+
+export default UserTab;
 
 const styles = StyleSheet.create({
 	container: {

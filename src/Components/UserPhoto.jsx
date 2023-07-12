@@ -1,9 +1,9 @@
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { PlusStyledButton } from './PlusStyledButton';
+import PlusStyledButton from './PlusStyledButton';
 import { useState, useEffect } from 'react';
 
-export const UserPhoto = () => {
+const UserPhoto = () => {
 	const [isBtnActive, setIsBtnActive] = useState(false);
 	const [photo, setPhoto] = useState(null);
 
@@ -39,6 +39,8 @@ export const UserPhoto = () => {
 		</View>
 	);
 };
+
+export default UserPhoto;
 
 const styles = StyleSheet.create({
 	userPhoto: {

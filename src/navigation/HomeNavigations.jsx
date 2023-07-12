@@ -1,16 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { CreatePostsScreen } from '../Screens/CreatePostsScreen';
-import { PostsScreen } from '../Screens/PostsScreen';
-import { ProfileScreen } from '../Screens/ProfileScreen';
-
+import CreatePostsScreen from '../Screens/CreatePostsScreen';
+import PostsScreen from '../Screens/PostsScreen';
+import ProfileScreen from '../Screens/ProfileScreen';
 import { CreateHeader, PublicationsHeader } from '../Components/CreateHeader';
-
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet } from 'react-native';
 
 const Tabs = createBottomTabNavigator();
 
-export const HomeNavigations = () => (
+const HomeNavigations = () => (
 	<Tabs.Navigator screenOptions={homeScreenOptions}>
 		<Tabs.Screen
 			name="Publications"
@@ -86,6 +84,8 @@ const homeScreenOptions = ({ route }) => ({
 		}
 	},
 });
+
+export default HomeNavigations;
 
 const styles = StyleSheet.create({
 	overlay: {

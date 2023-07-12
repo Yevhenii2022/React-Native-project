@@ -2,7 +2,7 @@ import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-export const Card = () => {
+const Card = () => {
 	const navigation = useNavigation();
 
 	return (
@@ -32,6 +32,8 @@ export const Card = () => {
 		</TouchableOpacity>
 	);
 };
+
+export default Card;
 
 const styles = StyleSheet.create({
 	container: {

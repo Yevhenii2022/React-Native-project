@@ -18,9 +18,9 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import image from '../../assets/photo_BG2x.png';
 import { useFonts } from 'expo-font';
-import { PlusStyledButton } from '../Components/PlusStyledButton';
+import PlusStyledButton from '../Components/PlusStyledButton';
 
-export const RegistrationScreen = () => {
+const RegistrationScreen = () => {
 	const navigation = useNavigation();
 	const [login, setLogin] = useState('');
 	const [email, setEmail] = useState('');
@@ -157,6 +157,8 @@ export const RegistrationScreen = () => {
 		</ImageBackground>
 	);
 };
+
+export default RegistrationScreen;
 
 const styles = StyleSheet.create({
 	base: {

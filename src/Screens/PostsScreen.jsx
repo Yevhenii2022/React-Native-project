@@ -1,20 +1,20 @@
-import { ScrollView, View, StyleSheet } from 'react-native';
-import { UserTab } from '../Components/UserTab';
-import { Card } from '../Components/Card';
+import { View, StyleSheet, FlatList } from 'react-native';
+import UserTab from '../Components/UserTab';
 
-export const PostsScreen = () => {
+const PostsScreen = () => {
 	return (
-		<ScrollView vertical={true} automaticallyAdjustContentInsets={false}>
-			<View style={styles.container}>
-				<UserTab />
-				<Card />
-				<Card />
-				<Card />
-				<Card />
-			</View>
-		</ScrollView>
+		<View style={styles.container}>
+			<UserTab />
+			<FlatList
+			// data={data}
+			// renderItem={({ item }) => <Text>{item.title}</Text>}
+			// keyExtractor={item => item.id}
+			></FlatList>
+		</View>
 	);
 };
+
+export default PostsScreen;
 
 const styles = StyleSheet.create({
 	container: {

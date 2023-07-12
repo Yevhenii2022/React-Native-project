@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import image from '../../assets/photo_BG2x.png';
 
-export const LoginScreen = () => {
+const LoginScreen = () => {
 	const navigation = useNavigation();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -107,6 +107,8 @@ export const LoginScreen = () => {
 		</ImageBackground>
 	);
 };
+
+export default LoginScreen;
 
 const styles = StyleSheet.create({
 	image: {
