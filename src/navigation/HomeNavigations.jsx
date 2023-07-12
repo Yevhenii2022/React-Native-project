@@ -10,7 +10,7 @@ import { View, StyleSheet } from 'react-native';
 
 const Tabs = createBottomTabNavigator();
 
-export const HomeNavigation = () => (
+export const HomeNavigations = () => (
 	<Tabs.Navigator screenOptions={homeScreenOptions}>
 		<Tabs.Screen
 			name="Publications"
