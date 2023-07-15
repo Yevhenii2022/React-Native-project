@@ -72,12 +72,10 @@ const styles = StyleSheet.create({
 
 	bottomContainer: {
 		marginTop: 8,
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	},
 	barLeft: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'flex-end',
 	},
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
 		lineHeight: 19,
 	},
 	barRight: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'flex-end',
 	},

@@ -15,6 +15,12 @@
 					"savePhotosPermission": "Allow PictuGramm to save photos.",
 					"isAccessMediaLocationEnabled": true
 				}
+			],
+			[
+				"expo-location",
+				{
+					"locationAlwaysAndWhenInUsePermission": "Allow PictuGramm to use your location."
+				}
 			]
 		],
 

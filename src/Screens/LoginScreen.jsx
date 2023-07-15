@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
 		top: 16,
 		right: 0,
 		textAlign: 'center',
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -181,7 +180,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 16,
 		paddingHorizontal: 32,
 		marginTop: 43,
-		display: 'flex',
 		alignItems: 'center',
 	},
 	btnText: {

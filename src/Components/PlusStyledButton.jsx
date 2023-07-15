@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 		borderStyle: 'solid',
 		borderColor: '#FF6C00',
 		top: 81,
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

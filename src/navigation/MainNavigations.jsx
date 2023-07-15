@@ -4,7 +4,7 @@ import LoginScreen from '../Screens/LoginScreen';
 import CommentsScreen from '../Screens/CommentsScreen';
 import HomeNavigations from './HomeNavigations';
 import MapScreen from '../Screens/MapScreen';
-import { CreateHeader } from '../Components/CreateHeader';
+import CreateHeader from '../Components/CreateHeader';
 
 const MainStack = createStackNavigator();
 

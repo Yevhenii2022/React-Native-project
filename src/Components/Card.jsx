@@ -55,13 +55,11 @@ const styles = StyleSheet.create({
 
 	bottomContainer: {
 		marginTop: 8,
-		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
 	barLeft: {
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'flex-end',
 	},
@@ -74,7 +72,6 @@ const styles = StyleSheet.create({
 	},
 	barRight: {
 		marginLeft: 8,
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 	},

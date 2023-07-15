@@ -2,7 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreatePostsScreen from '../Screens/CreatePostsScreen';
 import PostsScreen from '../Screens/PostsScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
-import { CreateHeader, PublicationsHeader } from '../Components/CreateHeader';
+import CreateHeader from '../Components/CreateHeader';
+import PublicationsHeader from '../Components/PublicationsHeader';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { View, StyleSheet } from 'react-native';
 
@@ -92,7 +93,6 @@ const styles = StyleSheet.create({
 		width: 70,
 		height: 40,
 		borderRadius: 20,
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: '#F6F6F6',

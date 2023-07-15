@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F6F6F6',
 		position: 'relative',
 		top: -64,
-		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 	},

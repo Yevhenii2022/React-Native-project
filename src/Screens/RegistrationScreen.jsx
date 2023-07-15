@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
 		borderStyle: 'solid',
 		borderColor: '#FF6C00',
 		top: 81,
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -262,7 +261,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 16,
 		paddingHorizontal: 32,
 		marginTop: 43,
-		display: 'flex',
 		alignItems: 'center',
 	},
 	btnText: {
@@ -294,7 +292,6 @@ const styles = StyleSheet.create({
 		top: 16,
 		right: 0,
 		textAlign: 'center',
-		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

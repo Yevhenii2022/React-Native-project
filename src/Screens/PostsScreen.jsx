@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 	container: {
 		width: '100%',
 		flex: 1,
-		display: 'flex',
 		alignItems: 'flex-start',
 		paddingHorizontal: 16,
 		paddingVertical: 32,
