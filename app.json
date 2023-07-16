@@ -21,6 +21,12 @@
 				{
 					"locationAlwaysAndWhenInUsePermission": "Allow PictuGramm to use your location."
 				}
+			],
+			[
+				"expo-camera",
+				{
+					"cameraPermission": "Allow PictuGramm to access your camera."
+				}
 			]
 		],
 
