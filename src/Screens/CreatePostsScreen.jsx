@@ -22,7 +22,7 @@ const initialPostData = {
 
 const CreatePostsScreen = () => {
 	const [postData, setPostData] = useState(initialPostData);
-	// const [location, setLocation] = useState(null);
+	const [location, setLocation] = useState(null);
 	const [hasPermission, setHasPermission] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
 	const [type, setType] = useState(Camera.Constants.Type.back);
@@ -43,15 +43,22 @@ const CreatePostsScreen = () => {
 		return <Text>No access to camera</Text>;
 	}
 
-	//   запрос на встановлення локації
-	// useEffect(() => {
-	// 	(async () => {
-	// 		let { status } = await Location.requestForegroundPermissionsAsync();
-	// 		if (status !== 'granted') {
-	// 			console.log('Permission to access location was denied');
-	// 		}
-	// 	})();
-	// }, []);
+	//Search for  location
+	useEffect(() => {
+		(async () => {
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== 'granted') {
+				Alert.error('Message: ', 'Permission to access location was denied');
+			}
+			let foundLocation = await Location.getCurrentPositionAsync();
+
+			const coords = {
+				latitude: foundLocation.coords.latitude,
+				longitude: foundLocation.coords.longitude,
+			};
+			setGeoposition(coords);
+		})();
+	}, []);
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -62,25 +69,6 @@ const CreatePostsScreen = () => {
 		});
 		if (!result.canceled) {
 			setImageToPostData(result.assets[0].uri);
-		}
-	};
-
-	//    обчислюємо координати, записуємо або фото з галереї або фото з камери в state
-	const setImageToPostData = async img => {
-		try {
-			// let location = await Location.getCurrentPositionAsync({});
-
-			// let coords = {
-			// 	latitude: location.coords.latitude,
-			// 	longitude: location.coords.longitude,
-			// };
-
-			let address = await Location.reverseGeocodeAsync(coords);
-			let city = address[0].city;
-			setPostData(prevState => ({ ...prevState, photo: img.uri || img }));
-			// setLocation(location);
-		} catch (error) {
-			console.log(error);
 		}
 	};
 
