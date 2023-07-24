@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
@@ -21,6 +22,7 @@ const initialPostData = {
 };
 
 const CreatePostsScreen = () => {
+	const navigation = useNavigation();
 	const [postData, setPostData] = useState(initialPostData);
 	const [location, setLocation] = useState(null);
 	const [hasPermission, setHasPermission] = useState(null);
@@ -44,21 +46,23 @@ const CreatePostsScreen = () => {
 	}
 
 	//Search for  location
-	useEffect(() => {
-		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
+	const searchLocation = async () => {
+		try {
+			let { status } = await Location.requestPermissionsAsync();
 			if (status !== 'granted') {
-				Alert.error('Message: ', 'Permission to access location was denied');
+				console.log('Permission to access location was denied');
 			}
-			let foundLocation = await Location.getCurrentPositionAsync();
 
+			let location = await Location.getCurrentPositionAsync({});
 			const coords = {
-				latitude: foundLocation.coords.latitude,
-				longitude: foundLocation.coords.longitude,
+				latitude: location.coords.latitude,
+				longitude: location.coords.longitude,
 			};
-			setGeoposition(coords);
-		})();
-	}, []);
+			setLocation(coords);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -76,9 +80,9 @@ const CreatePostsScreen = () => {
 		setPostData(prevState => ({ ...prevState, [type]: value }));
 	};
 
-	//   відправка поста на іншу сторінку
 	const sendPost = () => {
 		setPostData(initialPostData);
+		navigation.replace('Home');
 	};
 
 	const handleReset = () => {
@@ -157,7 +161,6 @@ const CreatePostsScreen = () => {
 								...styles.sendBtn,
 								backgroundColor: postData.photo ? '#FF6C00' : '#F6F6F6',
 							}}
-							disabled={!postData.photo}
 							activeOpacity={0.7}
 							onPress={sendPost}
 						>
