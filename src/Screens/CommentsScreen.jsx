@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
 	Image,
 	View,
+	ScrollView,
 	Text,
 	StyleSheet,
 	TextInput,
@@ -31,7 +32,11 @@ const commentItem2 = {
 
 const CommentsScreen = () => {
 	const [comment, setComment] = useState('');
-	const [allComments, setAllComments] = useState([commentItem, commentItem2]);
+	const [allComments, setAllComments] = useState([
+		commentItem,
+		commentItem2,
+		commentItem,
+	]);
 
 	const createComment = () => {
 		// setComment('');
@@ -85,47 +90,50 @@ const CommentsScreen = () => {
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<View style={styles.container}>
-				<ImageBackground
-					source={require('../../assets/UserRect1.png')}
-					style={{
-						height: 240,
-						borderRadius: 8,
-						paddingRight: 10,
-						overflow: 'hidden',
-					}}
-				/>
-				<SafeAreaView style={{ flex: 1 }}>
-					<FlatList
-						data={allComments}
-						keyExtractor={allComments.id}
-						renderItem={renderItem}
-					/>
-				</SafeAreaView>
-
-				<View style={styles.inputContainer}></View>
-				<View>
-					<TextInput
-						value={comment}
-						onChangeText={setComment}
-						placeholder="Коментувати..."
+		<ScrollView style={{ flex: 1 }}>
+			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+				<View style={styles.container}>
+					<ImageBackground
+						source={require('../../assets/UserRect1.png')}
 						style={{
-							...styles.submitBtn,
-							fontFamily: 'Roboto',
+							height: 240,
+							borderRadius: 8,
+							paddingRight: 10,
+							overflow: 'hidden',
 						}}
 					/>
 
-					<TouchableOpacity
-						style={styles.addCommentBtn}
-						activeOpacity={0.7}
-						onPress={createComment}
-					>
-						<AntDesign name="arrowup" size={24} color="#FFFFFF" />
-					</TouchableOpacity>
+					<SafeAreaView>
+						<FlatList
+							data={allComments}
+							keyExtractor={allComments.id}
+							renderItem={renderItem}
+						/>
+					</SafeAreaView>
+
+					<View style={styles.inputContainer}></View>
+					<View>
+						<TextInput
+							value={comment}
+							onChangeText={setComment}
+							placeholder="Коментувати..."
+							style={{
+								...styles.submitBtn,
+								fontFamily: 'Roboto',
+							}}
+						/>
+
+						<TouchableOpacity
+							style={styles.addCommentBtn}
+							activeOpacity={0.7}
+							onPress={createComment}
+						>
+							<AntDesign name="arrowup" size={24} color="#FFFFFF" />
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
-		</TouchableWithoutFeedback>
+			</TouchableWithoutFeedback>
+		</ScrollView>
 	);
 };
 

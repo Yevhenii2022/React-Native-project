@@ -13,17 +13,19 @@ import {
 	TouchableWithoutFeedback,
 	Keyboard,
 	TextInput,
+	ImageBackground,
 } from 'react-native';
 
 const initialPostData = {
-	photo: '',
 	description: '',
 	place: '',
+	photo: null,
 };
 
 const CreatePostsScreen = () => {
 	const navigation = useNavigation();
 	const [postData, setPostData] = useState(initialPostData);
+	const [isFocused, setIsFocused] = useState(null);
 	const [location, setLocation] = useState(null);
 	const [hasPermission, setHasPermission] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
@@ -40,9 +42,6 @@ const CreatePostsScreen = () => {
 
 	if (hasPermission === null) {
 		return <View />;
-	}
-	if (hasPermission === false) {
-		return <Text>No access to camera</Text>;
 	}
 
 	//Search for  location
@@ -72,11 +71,11 @@ const CreatePostsScreen = () => {
 			quality: 1,
 		});
 		if (!result.canceled) {
-			setImageToPostData(result.assets[0].uri);
+			handlePostData('photo', result.assets[0]);
 		}
 	};
 
-	const handleInput = (type, value) => {
+	const handlePostData = (type, value) => {
 		setPostData(prevState => ({ ...prevState, [type]: value }));
 	};
 
@@ -95,7 +94,16 @@ const CreatePostsScreen = () => {
 				<View>
 					<View style={styles.cameraContainer}>
 						<Camera style={styles.camera} type={type} ref={setCameraRef}>
-							<View style={styles.photoView}>
+							<ImageBackground source={postData.photo} style={styles.photoView}>
+								{!hasPermission && !postData.photo && (
+									<Text
+										style={{
+											color: '#ffffff',
+										}}
+									>
+										Завантажте будь-ласка Ваше фото
+									</Text>
+								)}
 								<TouchableOpacity
 									style={styles.flipContainer}
 									onPress={() => {
@@ -106,77 +114,104 @@ const CreatePostsScreen = () => {
 										);
 									}}
 								>
-									<Feather name="repeat" size={20} color="#BDBDBD" />
+									{hasPermission && (
+										<Feather name="repeat" size={20} color="#BDBDBD" />
+									)}
 								</TouchableOpacity>
-								<TouchableOpacity
-									style={styles.photoButton}
-									onPress={async () => {
-										if (cameraRef) {
-											const { uri } = await cameraRef.takePictureAsync();
-											await MediaLibrary.createAssetAsync(uri);
-										}
-									}}
-								>
-									<Ionicons name="camera" size={24} style={styles.photoIcon} />
-								</TouchableOpacity>
-							</View>
+								{hasPermission && (
+									<TouchableOpacity
+										style={styles.photoButton}
+										onPress={async () => {
+											if (cameraRef) {
+												const { uri } = await cameraRef.takePictureAsync();
+												const asset = await MediaLibrary.createAssetAsync(uri);
+												handlePostData('photo', asset);
+											}
+										}}
+									>
+										<Ionicons
+											name="camera"
+											size={24}
+											style={styles.photoIcon}
+										/>
+									</TouchableOpacity>
+								)}
+							</ImageBackground>
 						</Camera>
 					</View>
-					<TouchableOpacity style={styles.pickImgBtn} onPress={pickImage}>
-						<Text
-							style={{
-								...styles.btnTitle,
-								color: '#ffffff',
-							}}
-						>
-							Завантажити фото з галереї
-						</Text>
-					</TouchableOpacity>
-					<View style={styles.inputWrapper}>
-						<TextInput
-							style={{ ...styles.input, marginBottom: 16 }}
-							placeholder="Введіть назву..."
-							value={postData.description}
-							onChangeText={value => handleInput('description', value)}
-						/>
-						<TextInput
-							style={{ ...styles.input, paddingLeft: 28 }}
-							placeholder="Виберіть місце..."
-							value={postData.place}
-							onChangeText={value => handleInput('place', value)}
-						/>
-						<Octicons
-							name="location"
-							size={24}
-							style={{
-								position: 'absolute',
-								top: 71,
-								color: '#CECDCD',
-							}}
-						/>
-					</View>
-					<View>
-						<TouchableOpacity
-							style={{
-								...styles.sendBtn,
-								backgroundColor: postData.photo ? '#FF6C00' : '#F6F6F6',
-							}}
-							activeOpacity={0.7}
-							onPress={sendPost}
-						>
+					<View
+						style={{
+							justifyContent: 'flex-end',
+						}}
+					>
+						<TouchableOpacity style={styles.pickImgBtn} onPress={pickImage}>
 							<Text
 								style={{
 									...styles.btnTitle,
-									color: postData.photo ? '#fff' : '#BDBDBD',
+									color: '#ffffff',
 								}}
 							>
-								Опублікувати
+								Завантажити фото з галереї
 							</Text>
 						</TouchableOpacity>
+						<View style={styles.inputWrapper}>
+							<TextInput
+								style={[
+									styles.inputName,
+									isFocused === 'name' && styles.activeField,
+								]}
+								placeholder="Введіть назву..."
+								value={postData.description}
+								onChangeText={value => handlePostData('description', value)}
+								onFocus={() => setIsFocused('name')}
+								onBlur={() => setIsFocused(null)}
+							/>
+							<TextInput
+								style={[
+									styles.inputPlace,
+									isFocused === 'place' && styles.activeField,
+								]}
+								placeholder="Виберіть місце..."
+								value={postData.place}
+								onChangeText={value => handlePostData('place', value)}
+								onFocus={() => setIsFocused('place')}
+								onBlur={() => setIsFocused(null)}
+							/>
+							<Octicons
+								name="location"
+								size={24}
+								style={{
+									position: 'absolute',
+									top: 71,
+									color: '#CECDCD',
+								}}
+							/>
+						</View>
+						<View>
+							<TouchableOpacity
+								style={{
+									...styles.sendBtn,
+									backgroundColor: postData.photo ? '#FF6C00' : '#F6F6F6',
+								}}
+								activeOpacity={0.7}
+								onPress={sendPost}
+								disabled={!postData.photo}
+							>
+								<Text
+									style={{
+										...styles.btnTitle,
+										color: postData.photo ? '#fff' : '#BDBDBD',
+									}}
+								>
+									Опублікувати
+								</Text>
+							</TouchableOpacity>
+						</View>
+
+						<TouchableOpacity style={styles.removeButton} onPress={handleReset}>
+							<Feather name="trash-2" size={24} color="#DADADA" />
+						</TouchableOpacity>
 					</View>
-					<TouchableOpacity style={styles.removeButton} onPress={handleReset}>
-						<Feather name="trash-2" size={24} color="#DADADA" />
-					</TouchableOpacity>
 				</View>
 			</View>
 		</TouchableWithoutFeedback>
@@ -207,7 +242,17 @@ const styles = StyleSheet.create({
 	inputWrapper: {
 		marginTop: 22,
 	},
-	input: {
+	inputName: {
+		marginBottom: 16,
+		height: 45,
+		borderBottomWidth: 1,
+		borderBottomColor: '#E8E8E8',
+		fontFamily: 'Roboto',
+		fontSize: 16,
+		color: '#212121',
+	},
+	inputPlace: {
+		paddingLeft: 28,
 		height: 45,
 		borderBottomWidth: 1,
 		borderBottomColor: '#E8E8E8',
@@ -264,5 +309,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignSelf: 'center',
 		backgroundColor: '#F6F6F6',
+	},
+	activeField: {
+		borderBottomColor: '#FF6C00',
 	},
 });
