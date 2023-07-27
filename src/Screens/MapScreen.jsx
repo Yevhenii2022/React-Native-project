@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -8,9 +8,16 @@ import {
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
-const MapScreen = () => {
+const MapScreen = data => {
 	const [mapType, setMapStyle] = useState('standard');
+
+	// const { params } = data.route;
+	// console.log(data);
+	console.log(data);
+	const params = useRoute();
+	console.log(params);
 
 	return (
 		<View style={styles.container}>

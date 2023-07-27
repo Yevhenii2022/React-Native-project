@@ -27,13 +27,15 @@ const CreatePostsScreen = () => {
 	const [postData, setPostData] = useState(initialPostData);
 	const [isFocused, setIsFocused] = useState(null);
 	const [location, setLocation] = useState(null);
+	console.log(location);
+
 	const [hasPermission, setHasPermission] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
 	const [type, setType] = useState(Camera.Constants.Type.back);
 
 	useEffect(() => {
 		(async () => {
-			const { status } = await Camera.requestPermissionsAsync();
+			const { status } = await Camera.requestCameraPermissionsAsync();
 			await MediaLibrary.requestPermissionsAsync();
 
 			setHasPermission(status === 'granted');
@@ -47,7 +49,7 @@ const CreatePostsScreen = () => {
 	//Search for  location
 	const searchLocation = async () => {
 		try {
-			let { status } = await Location.requestPermissionsAsync();
+			let { status } = await Location.requestForegroundPermissionsAsync();
 			if (status !== 'granted') {
 				console.log('Permission to access location was denied');
 			}
@@ -82,6 +84,7 @@ const CreatePostsScreen = () => {
 	const sendPost = () => {
 		setPostData(initialPostData);
 		navigation.replace('Home');
+		searchLocation();
 	};
 
 	const handleReset = () => {
