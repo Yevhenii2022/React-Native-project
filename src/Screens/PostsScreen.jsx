@@ -6,9 +6,10 @@ const PostsScreen = () => {
 		<View style={styles.container}>
 			<UserTab />
 			<FlatList
-			// data={data}
-			// renderItem={({ item }) => <Text>{item.title}</Text>}
-			// keyExtractor={item => item.id}
+				// data={data}
+				// renderItem={({ item }) => <Text>{item.title}</Text>}
+				// keyExtractor={item => item.id}
+				showsVerticalScrollIndicator={false}
 			></FlatList>
 		</View>
 	);

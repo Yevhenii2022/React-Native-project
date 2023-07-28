@@ -2,14 +2,12 @@ import { useState } from 'react';
 import {
 	Image,
 	View,
-	ScrollView,
 	Text,
 	StyleSheet,
 	TextInput,
 	TouchableOpacity,
 	TouchableWithoutFeedback,
 	Keyboard,
-	SafeAreaView,
 	ImageBackground,
 	FlatList,
 } from 'react-native';
@@ -90,28 +88,21 @@ const CommentsScreen = () => {
 	};
 
 	return (
-		<ScrollView style={{ flex: 1 }}>
+		<View style={{ flex: 1 }}>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<View style={styles.container}>
-					<ImageBackground
-						source={require('../../assets/UserRect1.png')}
-						style={{
-							height: 240,
-							borderRadius: 8,
-							paddingRight: 10,
-							overflow: 'hidden',
-						}}
+					<FlatList
+						ListHeaderComponent={
+							<ImageBackground
+								source={require('../../assets/UserRect1.png')}
+								style={styles.imageBackground}
+							/>
+						}
+						data={allComments}
+						keyExtractor={allComments.id}
+						renderItem={renderItem}
+						showsVerticalScrollIndicator={false}
 					/>
-
-					<SafeAreaView>
-						<FlatList
-							data={allComments}
-							keyExtractor={allComments.id}
-							renderItem={renderItem}
-						/>
-					</SafeAreaView>
-
-					<View style={styles.inputContainer}></View>
 					<View>
 						<TextInput
 							value={comment}
@@ -133,7 +124,7 @@ const CommentsScreen = () => {
 					</View>
 				</View>
 			</TouchableWithoutFeedback>
-		</ScrollView>
+		</View>
 	);
 };
 
@@ -144,7 +135,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between',
 		paddingHorizontal: 16,
-		paddingVertical: 32,
+		paddingTop: 32,
+		paddingBottom: 16,
+	},
+	imageBackground: {
+		height: 240,
+		borderRadius: 8,
+		paddingRight: 10,
+		overflow: 'hidden',
 	},
 	avatarIcon: {
 		height: 40,
@@ -172,7 +170,7 @@ const styles = StyleSheet.create({
 	submitBtn: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 32,
+		marginTop: 16,
 		padding: 16,
 		height: 50,
 		borderWidth: 1,

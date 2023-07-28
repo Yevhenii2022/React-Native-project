@@ -15,10 +15,10 @@ import StoryCard from '../Components/StoryCard';
 
 const ProfileScreen = () => {
 	return (
-		<SafeAreaView>
+		<SafeAreaView showVerticalScrollIndicator={false}>
 			<ImageBackground source={image} style={styles.image} />
 			<View>
-				<ScrollView>
+				<ScrollView showsVerticalScrollIndicator={false}>
 					<View style={styles.view}>
 						<View>
 							<View style={styles.viewUserPhoto}>
