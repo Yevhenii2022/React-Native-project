@@ -83,12 +83,13 @@ const CreatePostsScreen = () => {
 
 	const sendPost = () => {
 		setPostData(initialPostData);
-		navigation.replace('Home');
+		navigation.navigate('Publications');
 		searchLocation();
 	};
 
 	const handleReset = () => {
 		setPostData(initialPostData);
+		setLocation(null);
 	};
 
 	return (
