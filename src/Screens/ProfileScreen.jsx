@@ -15,7 +15,7 @@ import StoryCard from '../Components/StoryCard';
 
 const ProfileScreen = () => {
 	return (
-		<SafeAreaView showVerticalScrollIndicator={false}>
+		<SafeAreaView>
 			<ImageBackground source={image} style={styles.image} />
 			<View>
 				<ScrollView showsVerticalScrollIndicator={false}>

@@ -34,6 +34,7 @@ const HomeNavigations = () => (
 );
 
 const CreateHeaderOption = {
+	unmountOnBlur: true,
 	headerShown: true,
 	header: ({ navigation, route, options }) => (
 		<CreateHeader navigation={navigation} route={route} options={options} />

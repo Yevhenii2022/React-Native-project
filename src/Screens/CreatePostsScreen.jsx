@@ -35,10 +35,34 @@ const CreatePostsScreen = () => {
 
 	useEffect(() => {
 		(async () => {
-			const { status } = await Camera.requestCameraPermissionsAsync();
-			await MediaLibrary.requestPermissionsAsync();
+			try {
+				let { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') {
+					console.log('Permission to access location was denied');
+				}
 
-			setHasPermission(status === 'granted');
+				let location = await Location.getCurrentPositionAsync({});
+				const coords = {
+					latitude: location.coords.latitude,
+					longitude: location.coords.longitude,
+				};
+				setLocation(coords);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const { status } = await Camera.requestCameraPermissionsAsync();
+				await MediaLibrary.requestPermissionsAsync();
+
+				setHasPermission(status === 'granted');
+			} catch (error) {
+				console.log(error);
+			}
 		})();
 	}, []);
 
@@ -46,34 +70,19 @@ const CreatePostsScreen = () => {
 		return <View />;
 	}
 
-	//Search for  location
-	const searchLocation = async () => {
+	const pickImage = async () => {
 		try {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== 'granted') {
-				console.log('Permission to access location was denied');
+			let result = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.All,
+				allowsEditing: true,
+				aspect: [4, 3],
+				quality: 1,
+			});
+			if (!result.canceled) {
+				handlePostData('photo', result.assets[0]);
 			}
-
-			let location = await Location.getCurrentPositionAsync({});
-			const coords = {
-				latitude: location.coords.latitude,
-				longitude: location.coords.longitude,
-			};
-			setLocation(coords);
 		} catch (error) {
 			console.log(error);
-		}
-	};
-
-	const pickImage = async () => {
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			allowsEditing: true,
-			aspect: [4, 3],
-			quality: 1,
-		});
-		if (!result.canceled) {
-			handlePostData('photo', result.assets[0]);
 		}
 	};
 
@@ -83,8 +92,8 @@ const CreatePostsScreen = () => {
 
 	const sendPost = () => {
 		setPostData(initialPostData);
+		setLocation(null);
 		navigation.navigate('Publications');
-		searchLocation();
 	};
 
 	const handleReset = () => {
@@ -126,10 +135,16 @@ const CreatePostsScreen = () => {
 									<TouchableOpacity
 										style={styles.photoButton}
 										onPress={async () => {
-											if (cameraRef) {
-												const { uri } = await cameraRef.takePictureAsync();
-												const asset = await MediaLibrary.createAssetAsync(uri);
-												handlePostData('photo', asset);
+											try {
+												if (cameraRef) {
+													const { uri } = await cameraRef.takePictureAsync();
+													const asset = await MediaLibrary.createAssetAsync(
+														uri,
+													);
+													handlePostData('photo', asset);
+												}
+											} catch (error) {
+												console.log(error);
 											}
 										}}
 									>
@@ -191,6 +206,7 @@ const CreatePostsScreen = () => {
 								}}
 							/>
 						</View>
+
 						<View>
 							<TouchableOpacity
 								style={{
@@ -211,11 +227,21 @@ const CreatePostsScreen = () => {
 								</Text>
 							</TouchableOpacity>
 						</View>
-
-						<TouchableOpacity style={styles.removeButton} onPress={handleReset}>
-							<Feather name="trash-2" size={24} color="#DADADA" />
-						</TouchableOpacity>
 					</View>
+				</View>
+				<View style={{ flexGrow: 1, justifyContent: 'flex-end' }}>
+					<TouchableOpacity style={styles.removeButton} onPress={handleReset}>
+						<Feather
+							name="trash-2"
+							size={24}
+							style={{
+								color:
+									postData.photo || postData.description || postData.place
+										? '#FF6C00'
+										: '#DADADA',
+							}}
+						/>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</TouchableWithoutFeedback>
@@ -227,7 +253,7 @@ export default CreatePostsScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingVertical: 30,
+		paddingVertical: 32,
 		paddingHorizontal: 16,
 		backgroundColor: '#ffffff',
 	},
@@ -308,7 +334,6 @@ const styles = StyleSheet.create({
 		width: 70,
 		height: 40,
 		borderRadius: 30,
-		marginTop: 40,
 		alignItems: 'center',
 		justifyContent: 'center',
 		alignSelf: 'center',

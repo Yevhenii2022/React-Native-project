@@ -30,11 +30,7 @@ const commentItem2 = {
 
 const CommentsScreen = () => {
 	const [comment, setComment] = useState('');
-	const [allComments, setAllComments] = useState([
-		commentItem,
-		commentItem2,
-		commentItem,
-	]);
+	const [allComments, setAllComments] = useState([commentItem]);
 
 	const createComment = () => {
 		// setComment('');
