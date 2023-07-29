@@ -15,6 +15,7 @@ import {
 	TextInput,
 	ImageBackground,
 } from 'react-native';
+import Spinner from '../Components/Spiner';
 
 const initialPostData = {
 	description: '',
@@ -32,6 +33,7 @@ const CreatePostsScreen = () => {
 	const [hasPermission, setHasPermission] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
 	const [type, setType] = useState(Camera.Constants.Type.back);
+	const [isLoading, setIsLoading] = useState('idle');
 
 	useEffect(() => {
 		(async () => {
@@ -133,26 +135,39 @@ const CreatePostsScreen = () => {
 								</TouchableOpacity>
 								{hasPermission && (
 									<TouchableOpacity
+										disabled={isLoading === 'pending' ? true : false}
 										style={styles.photoButton}
 										onPress={async () => {
 											try {
+												setIsLoading('pending');
 												if (cameraRef) {
 													const { uri } = await cameraRef.takePictureAsync();
 													const asset = await MediaLibrary.createAssetAsync(
 														uri,
 													);
 													handlePostData('photo', asset);
+													setIsLoading('fullfield');
 												}
 											} catch (error) {
 												console.log(error);
 											}
 										}}
 									>
-										<Ionicons
-											name="camera"
-											size={24}
-											style={styles.photoIcon}
-										/>
+										{isLoading === 'idle' && (
+											<Ionicons
+												name="camera"
+												size={24}
+												style={styles.photoIcon}
+											/>
+										)}
+										{isLoading === 'pending' && <Spinner />}
+										{isLoading === 'fullfield' && (
+											<Ionicons
+												name="camera"
+												size={24}
+												style={styles.photoIcon}
+											/>
+										)}
 									</TouchableOpacity>
 								)}
 							</ImageBackground>
