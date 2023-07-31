@@ -11,29 +11,43 @@ import {
 	TouchableWithoutFeedback,
 	KeyboardAvoidingView,
 	Keyboard,
-	Alert,
 } from 'react-native';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import image from '../../assets/photo_BG2x.png';
 import { useFonts } from 'expo-font';
 import PlusStyledButton from '../Components/PlusStyledButton';
+import { authSignUpUser } from '../redux/auth/authOperations';
+
+const initialState = {
+	name: '',
+	email: '',
+	password: '',
+	avatar: null,
+};
 
 const RegistrationScreen = () => {
 	const navigation = useNavigation();
-	const [login, setLogin] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [state, setState] = useState(initialState);
+	console.log(state);
+	// const [avatarUpload, setAvatarUpload] = useState('');
 	const [isShownPasword, setIsShownPasword] = useState(true);
 	const [isFocused, setIsFocused] = useState(null);
-	const [photo, setPhoto] = useState(null);
 	const [isBtnActive, setIsBtnActive] = useState(false);
 
+	const dispatch = useDispatch();
+
+	const handleSetState = (type, value) => {
+		setState(prevState => ({ ...prevState, [type]: value }));
+	};
+
 	useEffect(() => {
-		if (photo) setIsBtnActive(true);
+		if (state.avatar) setIsBtnActive(true);
 		else setIsBtnActive(false);
-	}, [photo]);
+	}, [state.avatar]);
 
 	const pickImage = async () => {
 		try {
@@ -45,7 +59,7 @@ const RegistrationScreen = () => {
 			});
 
 			if (!result.canceled) {
-				setPhoto(result.assets[0].uri);
+				handleSetState('avatar', result.assets[0].uri);
 			}
 		} catch (error) {
 			console.log(error.message);
@@ -61,7 +75,7 @@ const RegistrationScreen = () => {
 	}
 
 	const handlePressStyledButton = () => {
-		photo ? setPhoto(null) : pickImage();
+		state.avatar ? handleSetState('avatar', null) : pickImage();
 	};
 
 	const showPassword = () => {
@@ -69,13 +83,8 @@ const RegistrationScreen = () => {
 	};
 
 	const onRegistration = () => {
-		Alert.alert(
-			'FormData',
-			`Login: ${login}  Password: ${password} Email: ${email}`,
-		);
-		setLogin('');
-		setPassword('');
-		setEmail('');
+		dispatch(authSignUpUser(state));
+		setState(initialState);
 		navigation.replace('Home');
 	};
 
@@ -91,8 +100,11 @@ const RegistrationScreen = () => {
 								keyboardVerticalOffset={0}
 							>
 								<View style={styles.userPhoto}>
-									{photo && (
-										<Image source={{ uri: photo }} style={styles.photo} />
+									{state.avatar && (
+										<Image
+											source={{ uri: state.avatar }}
+											style={styles.photo}
+										/>
 									)}
 									<PlusStyledButton
 										isActive={isBtnActive}
@@ -105,8 +117,8 @@ const RegistrationScreen = () => {
 									onBlur={() => setIsFocused(null)}
 									style={[styles.input, isFocused === 'login' && styles.active]}
 									placeholder="Логін"
-									onChangeText={setLogin}
-									value={login}
+									onChangeText={value => handleSetState('name', value)}
+									value={state.name}
 									inputMode="text"
 									placeholderTextColor="#BDBDBD"
 								/>
@@ -115,8 +127,8 @@ const RegistrationScreen = () => {
 									onBlur={() => setIsFocused(null)}
 									placeholder="Адреса електронної пошти"
 									style={[styles.input, isFocused === 'email' && styles.active]}
-									onChangeText={setEmail}
-									value={email}
+									onChangeText={value => handleSetState('email', value)}
+									value={state.email}
 									inputMode="email"
 									placeholderTextColor="#BDBDBD"
 								/>
@@ -129,8 +141,8 @@ const RegistrationScreen = () => {
 											styles.input,
 											isFocused === 'password' && styles.active,
 										]}
-										onChangeText={setPassword}
-										value={password}
+										onChangeText={value => handleSetState('password', value)}
+										value={state.password}
 										textContentType="password"
 										placeholderTextColor="#BDBDBD"
 										secureTextEntry={isShownPasword}
@@ -145,7 +157,11 @@ const RegistrationScreen = () => {
 									</TouchableOpacity>
 								</View>
 							</KeyboardAvoidingView>
-							<TouchableOpacity style={styles.btn} onPress={onRegistration}>
+							<TouchableOpacity
+								activeOpacity={0.6}
+								style={styles.btn}
+								onPress={onRegistration}
+							>
 								<Text style={styles.btnText}>Зареєстуватися</Text>
 							</TouchableOpacity>
 							<TouchableOpacity

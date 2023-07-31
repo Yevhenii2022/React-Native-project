@@ -88,7 +88,11 @@ const LoginScreen = () => {
 									</TouchableOpacity>
 								</View>
 							</KeyboardAvoidingView>
-							<TouchableOpacity style={styles.btn} onPress={onLogin}>
+							<TouchableOpacity
+								activeOpacity={0.6}
+								style={styles.btn}
+								onPress={onLogin}
+							>
 								<Text style={styles.btnText}>Увійти</Text>
 							</TouchableOpacity>
 							<TouchableOpacity style={styles.bottomTextContainer}>
