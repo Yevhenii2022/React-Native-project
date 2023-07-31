@@ -13,16 +13,23 @@ import {
 	Alert,
 } from 'react-native';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { authSignInUser } from '../redux/auth/authOperations';
 import image from '../../assets/photo_BG2x.png';
+
+const initialState = {
+	email: '',
+	password: '',
+};
 
 const LoginScreen = () => {
 	const navigation = useNavigation();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [state, setState] = useState(initialState);
 	const [isShownPasword, setIsShownPasword] = useState(true);
 	const [isFocused, setIsFocused] = useState(null);
+	const dispatch = useDispatch();
 
 	const showPassword = () => {
 		setIsShownPasword(prev => !prev);
@@ -35,10 +42,13 @@ const LoginScreen = () => {
 		return null;
 	}
 
+	const handleSetState = (type, value) => {
+		setState(prevState => ({ ...prevState, [type]: value }));
+	};
+
 	const onLogin = () => {
-		Alert.alert('FormData: ', `pass:  ${password}  email:  ${email}`);
-		setEmail('');
-		setPassword('');
+		dispatch(authSignInUser(state));
+		setState(initialState);
 		navigation.replace('Home');
 	};
 
@@ -58,8 +68,8 @@ const LoginScreen = () => {
 									onBlur={() => setIsFocused(null)}
 									placeholder="Адреса електронної пошти"
 									style={[styles.input, isFocused === 'email' && styles.active]}
-									onChangeText={setEmail}
-									value={email}
+									onChangeText={value => handleSetState('email', value)}
+									value={state.email}
 									inputMode="email"
 									placeholderTextColor="#BDBDBD"
 								/>
@@ -72,8 +82,8 @@ const LoginScreen = () => {
 											styles.input,
 											isFocused === 'password' && styles.active,
 										]}
-										onChangeText={setPassword}
-										value={password}
+										onChangeText={value => handleSetState('password', value)}
+										value={state.password}
 										textContentType="password"
 										placeholderTextColor="#BDBDBD"
 										secureTextEntry={isShownPasword}

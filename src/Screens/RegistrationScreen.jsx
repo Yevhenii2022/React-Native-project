@@ -32,7 +32,6 @@ const initialState = {
 const RegistrationScreen = () => {
 	const navigation = useNavigation();
 	const [state, setState] = useState(initialState);
-	console.log(state);
 	// const [avatarUpload, setAvatarUpload] = useState('');
 	const [isShownPasword, setIsShownPasword] = useState(true);
 	const [isFocused, setIsFocused] = useState(null);

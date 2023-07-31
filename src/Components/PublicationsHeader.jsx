@@ -1,9 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import { getHeaderTitle } from '@react-navigation/elements';
+import { authSignOutUser } from '../redux/auth/authOperations.js';
 
 const PublicationsHeader = ({ navigation, route, options }) => {
+	const dispatch = useDispatch();
 	const title = getHeaderTitle(options, route.name);
+
+	const signOut = () => {
+		dispatch(authSignOutUser());
+		navigation.navigate('Login');
+	};
+
 	return (
 		<View style={styles.hedder}>
 			<Text style={styles.title}>{title}</Text>
@@ -11,7 +20,7 @@ const PublicationsHeader = ({ navigation, route, options }) => {
 				name="log-out"
 				size={24}
 				color="#BDBDBD"
-				onPress={() => navigation.navigate('Login')}
+				onPress={signOut}
 				style={styles.exitBtn}
 			/>
 		</View>
