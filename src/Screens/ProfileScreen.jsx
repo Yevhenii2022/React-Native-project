@@ -8,14 +8,17 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { authSignOutUser } from '../redux/auth/authOperations';
 import image from '../../assets/photo_BG2x.png';
 import UserPhoto from '../Components/UserPhoto';
 import StoryCard from '../Components/StoryCard';
+import { selectStateLogin } from '../redux/auth/selectors';
 
 const ProfileScreen = () => {
+	const login = useSelector(selectStateLogin);
+
 	return (
 		<SafeAreaView>
 			<ImageBackground source={image} style={styles.image} />
@@ -27,7 +30,7 @@ const ProfileScreen = () => {
 								<UserPhoto />
 							</View>
 							<ExitBtn />
-							<Text style={styles.Name}>Natali Romanova</Text>
+							<Text style={styles.Name}>{login}</Text>
 						</View>
 						<StoryCard />
 						<StoryCard />
@@ -42,11 +45,9 @@ const ProfileScreen = () => {
 
 function ExitBtn() {
 	const dispatch = useDispatch();
-	const navigation = useNavigation();
 
 	const signOut = () => {
 		dispatch(authSignOutUser());
-		navigation.navigate('Login');
 	};
 
 	return (

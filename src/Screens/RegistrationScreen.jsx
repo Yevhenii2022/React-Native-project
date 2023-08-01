@@ -18,7 +18,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import image from '../../assets/photo_BG2x.png';
-import { useFonts } from 'expo-font';
 import PlusStyledButton from '../Components/PlusStyledButton';
 import { authSignUpUser } from '../redux/auth/authOperations';
 
@@ -65,14 +64,6 @@ const RegistrationScreen = () => {
 		}
 	};
 
-	const [fontsLoaded] = useFonts({
-		Roboto: require('../../assets/fonts/Roboto-Regular.ttf'),
-	});
-
-	if (!fontsLoaded) {
-		return null;
-	}
-
 	const handlePressStyledButton = () => {
 		state.avatar ? handleSetState('avatar', null) : pickImage();
 	};
@@ -84,7 +75,6 @@ const RegistrationScreen = () => {
 	const onRegistration = () => {
 		dispatch(authSignUpUser(state));
 		setState(initialState);
-		navigation.replace('Home');
 	};
 
 	return (

@@ -28,6 +28,7 @@ const CreatePostsScreen = () => {
 	const [postData, setPostData] = useState(initialPostData);
 	const [isFocused, setIsFocused] = useState(null);
 	const [location, setLocation] = useState(null);
+
 	const [hasPermission, setHasPermission] = useState(null);
 	const [cameraRef, setCameraRef] = useState(null);
 	const [type, setType] = useState(Camera.Constants.Type.back);

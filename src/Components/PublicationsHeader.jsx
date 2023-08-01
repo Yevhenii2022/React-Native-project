@@ -4,13 +4,12 @@ import { Feather } from '@expo/vector-icons';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { authSignOutUser } from '../redux/auth/authOperations.js';
 
-const PublicationsHeader = ({ navigation, route, options }) => {
+const PublicationsHeader = ({ route, options }) => {
 	const dispatch = useDispatch();
 	const title = getHeaderTitle(options, route.name);
 
 	const signOut = () => {
 		dispatch(authSignOutUser());
-		navigation.navigate('Login');
 	};
 
 	return (

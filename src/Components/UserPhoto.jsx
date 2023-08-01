@@ -1,11 +1,14 @@
 import { View, StyleSheet, ImageBackground } from 'react-native';
+import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import PlusStyledButton from './PlusStyledButton';
-import { useState, useEffect } from 'react';
+import { selectStateAvatar } from '../redux/auth/selectors';
 
 const UserPhoto = () => {
+	const avatar = useSelector(selectStateAvatar);
 	const [isBtnActive, setIsBtnActive] = useState(false);
-	const [photo, setPhoto] = useState(null);
+	const [photo, setPhoto] = useState(avatar);
 
 	useEffect(() => {
 		if (photo) setIsBtnActive(true);

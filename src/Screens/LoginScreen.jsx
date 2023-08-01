@@ -10,12 +10,10 @@ import {
 	TouchableWithoutFeedback,
 	KeyboardAvoidingView,
 	Keyboard,
-	Alert,
 } from 'react-native';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { authSignInUser } from '../redux/auth/authOperations';
 import image from '../../assets/photo_BG2x.png';
 
@@ -35,13 +33,6 @@ const LoginScreen = () => {
 		setIsShownPasword(prev => !prev);
 	};
 
-	const [fontsLoaded] = useFonts({
-		Roboto: require('../../assets/fonts/Roboto-Regular.ttf'),
-	});
-	if (!fontsLoaded) {
-		return null;
-	}
-
 	const handleSetState = (type, value) => {
 		setState(prevState => ({ ...prevState, [type]: value }));
 	};
@@ -49,7 +40,6 @@ const LoginScreen = () => {
 	const onLogin = () => {
 		dispatch(authSignInUser(state));
 		setState(initialState);
-		navigation.replace('Home');
 	};
 
 	return (

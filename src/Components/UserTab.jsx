@@ -1,15 +1,27 @@
+import { useSelector } from 'react-redux';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {
+	selectStateLogin,
+	selectStateAvatar,
+	selectStateEmail,
+} from '../redux/auth/selectors';
 
-const UserTab = ({ email, name, photo }) => {
+const UserTab = () => {
+	const login = useSelector(selectStateLogin);
+	const avatar = useSelector(selectStateAvatar);
+	const email = useSelector(selectStateEmail);
+
+	const avatarUser =
+		avatar !== null
+			? avatar
+			: 'https://firebasestorage.googleapis.com/v0/b/first-react-native-proje-98226.appspot.com/o/userAvatars%2FDefault_pfp.svg.png?alt=media&token=7cafd3a4-f9a4-40f2-9115-9067f5a15f57';
+
 	return (
 		<TouchableOpacity style={styles.container}>
-			<Image
-				source={require('../../assets/userPhoto.png')}
-				style={styles.photo}
-			/>
+			<Image src={avatarUser} style={styles.photo} />
 			<View>
-				<Text style={styles.title}>Natali Romanova</Text>
-				<Text style={styles.email}>email@example.com</Text>
+				<Text style={styles.title}>{login}</Text>
+				<Text style={styles.email}>{email}</Text>
 			</View>
 		</TouchableOpacity>
 	);
