@@ -1,3 +1,4 @@
+export const selectUserData = state => state.auth;
 export const selectIsCurrentUser = state => state.auth.isCurrentUser;
 export const selectIsLoading = state => state.auth.isLoading;
 export const selectStateLogin = state => state.auth.name;

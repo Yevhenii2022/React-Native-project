@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
 	Image,
 	View,
@@ -12,32 +13,68 @@ import {
 	FlatList,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import photo from '../../assets/userPhoto.png';
+import {
+	collection,
+	addDoc,
+	doc,
+	onSnapshot,
+	updateDoc,
+} from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { selectUserData } from '../redux/auth/selectors';
 
-const commentItem = {
-	id: '1',
-	comment: 'Really cool photo of nature.',
-	date: '09 червня, 2020',
-	time: '08:40',
-};
+const CommentsScreen = ({ route }) => {
+	const { postId, photo } = route.params;
 
-const commentItem2 = {
-	name: 'Anna',
-	comment: 'Really cool photo of nature.',
-	date: '09 червня, 2020',
-	time: '08:40',
-};
-
-const CommentsScreen = () => {
+	const { userId, name, avatar } = useSelector(selectUserData);
 	const [comment, setComment] = useState('');
-	const [allComments, setAllComments] = useState([commentItem]);
+	const [allComments, setAllComments] = useState([]);
 
+	//   створення коментарів
 	const createComment = () => {
-		// setComment('');
+		sendCommentToServer();
+		setComment('');
 	};
 
+	//   завантаження коментарів на firebase
+	const sendCommentToServer = async () => {
+		const date = new Date().toLocaleDateString();
+		const time = new Date().toLocaleTimeString();
+		try {
+			const dbRef = doc(db, 'posts', postId);
+			await updateDoc(dbRef, {
+				comments: allComments.length + 1,
+			});
+			await addDoc(collection(dbRef, 'comments'), {
+				comment,
+				name,
+				date,
+				time,
+				userId,
+				avatar,
+			});
+		} catch (error) {
+			console.log('error.message', error.message);
+		}
+	};
+	//   відображення коментарів на сторінці
+	const getAllComments = async () => {
+		try {
+			const dbRef = doc(db, 'posts', postId);
+			onSnapshot(collection(dbRef, 'comments'), docSnap =>
+				setAllComments(docSnap.docs.map(doc => ({ ...doc.data() }))),
+			);
+		} catch (error) {
+			console.log(`getAllComments`, error);
+		}
+	};
+
+	useEffect(() => {
+		getAllComments();
+	}, []);
+
 	const renderItem = ({ item }) => {
-		const currentUser = item.id;
+		const currentUser = userId === item.userId;
 
 		return (
 			<View
@@ -47,7 +84,7 @@ const CommentsScreen = () => {
 				}}
 			>
 				<Image
-					source={photo}
+					source={{ uri: item.avatar }}
 					style={{
 						...styles.avatarIcon,
 						marginLeft: currentUser ? 0 : 15,
@@ -90,7 +127,7 @@ const CommentsScreen = () => {
 					<FlatList
 						ListHeaderComponent={
 							<ImageBackground
-								source={require('../../assets/UserRect1.png')}
+								source={{ uri: photo }}
 								style={styles.imageBackground}
 							/>
 						}

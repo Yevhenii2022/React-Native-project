@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -9,16 +9,24 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const MapScreen = () => {
+const MapScreen = ({ route }) => {
 	const [mapType, setMapStyle] = useState('standard');
+	const [location, setLocation] = useState(null);
+
+	useEffect(() => {
+		if (route.params) {
+			setLocation(route.params.location);
+		}
+	}, []);
+
+	const coordinate = location ? location : { latitude: 0, longitude: 0 };
 
 	return (
 		<View style={styles.container}>
 			<MapView
 				style={styles.mapStyle}
 				region={{
-					latitude: 44.5934276,
-					longitude: 33.5519664,
+					...location,
 					latitudeDelta: 0.04,
 					longitudeDelta: 0.05,
 				}}
@@ -26,14 +34,16 @@ const MapScreen = () => {
 				mapType={mapType}
 				provider="google"
 				minZoomLevel={1}
-				onMapReady={() => console.log('Map is ready')}
-				onRegionChange={() => console.log('Region change')}
+				// onMapReady={() => console.log('Map is ready')}
+				// onRegionChange={() => console.log('Region change')}
 			>
-				<Marker
-					title="I am here"
-					coordinate={{ latitude: 44.5934276, longitude: 33.5519664 }}
-					description="Hello"
-				/>
+				{location && (
+					<Marker
+						title="I am here"
+						coordinate={coordinate}
+						description="Hello"
+					/>
+				)}
 			</MapView>
 			<TouchableOpacity
 				style={styles.mapType}

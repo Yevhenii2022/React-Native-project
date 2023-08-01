@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -7,38 +8,80 @@ import {
 	Text,
 	TouchableOpacity,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { Feather } from '@expo/vector-icons';
+import { collection, where, query, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { authSignOutUser } from '../redux/auth/authOperations';
 import image from '../../assets/photo_BG2x.png';
 import UserPhoto from '../Components/UserPhoto';
-import StoryCard from '../Components/StoryCard';
-import { selectStateLogin } from '../redux/auth/selectors';
+import PostCard from '../Components/PostCard';
+import { selectUserData } from '../redux/auth/selectors';
 
 const ProfileScreen = () => {
-	const login = useSelector(selectStateLogin);
+	const navigation = useNavigation();
+	const { userId, name } = useSelector(selectUserData);
+	const [posts, setPosts] = useState([]);
+	// const dispatch = useDispatch();
+
+	//   відмальовує всі пости на сторінці
+	useEffect(() => {
+		getUserPost();
+	}, []);
+
+	//   шукаємо всі пости одного юзера по userId
+	const getUserPost = async () => {
+		const postRef = collection(db, 'posts');
+		const q = query(postRef, where('userId', '==', userId));
+		onSnapshot(q, docSnap =>
+			setPosts(docSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }))),
+		);
+	};
 
 	return (
 		<SafeAreaView>
 			<ImageBackground source={image} style={styles.image} />
-			<View>
-				<ScrollView showsVerticalScrollIndicator={false}>
-					<View style={styles.view}>
-						<View>
-							<View style={styles.viewUserPhoto}>
-								<UserPhoto />
-							</View>
-							<ExitBtn />
-							<Text style={styles.Name}>{login}</Text>
+
+			<ScrollView showsVerticalScrollIndicator={false}>
+				<View style={styles.view}>
+					<View>
+						<View style={styles.viewUserPhoto}>
+							<UserPhoto />
 						</View>
-						<StoryCard />
-						<StoryCard />
-						<StoryCard />
-						<StoryCard />
+						<ExitBtn />
+						<Text style={styles.Name}>{name}</Text>
 					</View>
-				</ScrollView>
-			</View>
+
+					{posts.length === 0 && (
+						<View style={{ flex: 1, marginTop: 10, paddingHorizontal: 20 }}>
+							<Text style={{ textAlign: 'center' }}>
+								Зараз у тебе немає публікацій, але ти можеш їх створити - тисни
+								на цю кнопку
+							</Text>
+
+							<TouchableOpacity
+								style={styles.buttonCapture}
+								onPress={() => navigation.navigate('Create')}
+							>
+								<MaterialIcons name="add" size={24} color={'#FFFFFF'} />
+							</TouchableOpacity>
+						</View>
+					)}
+
+					{posts.map(item => (
+						<PostCard
+							key={item.id}
+							description={item.description}
+							place={item.place}
+							location={item.location}
+							photo={item.photo.uri}
+							postId={item.id}
+							commentsLength={item.comments}
+						/>
+					))}
+				</View>
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
@@ -67,7 +110,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
 	image: {
 		resizeMode: 'cover',
-		height: 900,
+		height: 750,
 		flex: 1,
 	},
 	Name: {
@@ -82,7 +125,7 @@ const styles = StyleSheet.create({
 	},
 	view: {
 		marginTop: 163,
-		minHeight: 450,
+		minHeight: 570,
 		backgroundColor: '#ffffff',
 		borderColor: '#ffffff',
 		borderWidth: 5,
@@ -93,6 +136,16 @@ const styles = StyleSheet.create({
 		paddingRight: 16,
 		paddingBottom: 43,
 		gap: 32,
+	},
+	buttonCapture: {
+		marginTop: 30,
+		height: 60,
+		width: 60,
+		alignItems: 'center',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		borderRadius: 50,
+		backgroundColor: '#FF6C00',
 	},
 	viewUserPhoto: { alignItems: 'center' },
 	exitBtn: {

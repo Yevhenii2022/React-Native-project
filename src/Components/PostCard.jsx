@@ -1,51 +1,77 @@
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
-const StoryCard = () => {
+const PostCard = ({
+	description,
+	place,
+	location,
+	photo,
+	postId,
+	commentsLength,
+}) => {
 	const navigation = useNavigation();
+
+	//   видалення поста з профілю
+	const deletePost = async postId => {
+		await deleteDoc(doc(db, 'posts', postId));
+	};
+
 	return (
 		<TouchableOpacity style={styles.container} disabled={true}>
 			<View>
-				<Image
-					source={require('../../assets/UserRect1.png')}
-					style={styles.photo}
-				/>
-				<Text style={styles.title}>Ліс</Text>
+				<TouchableOpacity
+					style={styles.deletePostBtn}
+					onPress={() => deletePost(postId)}
+				>
+					<MaterialIcons name="close" size={26} color="#212121" />
+				</TouchableOpacity>
+				<Image src={photo} style={styles.photo} />
+				<Text style={styles.title}>{description}</Text>
 			</View>
 
 			<View style={styles.bottomContainer}>
 				<View style={styles.leftSideIcons}>
 					<TouchableOpacity
 						style={styles.barLeft}
-						onPress={() => navigation.navigate('Comments')}
+						onPress={() =>
+							navigation.navigate('Comments', {
+								postId: postId,
+								photo: photo,
+							})
+						}
 					>
 						<Feather
 							name="message-circle"
 							size={24}
-							style={styles.messageIcon}
+							style={{
+								...styles.messageIcon,
+								color: commentsLength ? '#FF6C00' : '#BDBDBD',
+							}}
 						/>
-						<Text style={styles.barLeftText}>6</Text>
+						<Text style={styles.barLeftText}>{commentsLength || 0}</Text>
 					</TouchableOpacity>
 					<View style={styles.barLeft}>
 						<Feather name="thumbs-up" size={24} style={styles.thumbUpIcon} />
-						<Text style={styles.barLeftText}>26</Text>
+						<Text style={styles.barLeftText}>0</Text>
 					</View>
 				</View>
 
 				<TouchableOpacity
 					style={styles.barRight}
-					onPress={() => navigation.navigate('Map')}
+					onPress={() => navigation.navigate('Map', { location: location })}
 				>
 					<Feather name="map-pin" size={24} style={styles.pinIcon} />
-					<Text style={styles.barRightText}>Ukraine</Text>
+					<Text style={styles.barRightText}>{place}</Text>
 				</TouchableOpacity>
 			</View>
 		</TouchableOpacity>
 	);
 };
 
-export default StoryCard;
+export default PostCard;
 
 const styles = StyleSheet.create({
 	container: {
@@ -56,6 +82,19 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		width: '100%',
 		height: 240,
+	},
+	deletePostBtn: {
+		position: 'absolute',
+		top: 10,
+		right: 10,
+		zIndex: 10,
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: 30,
+		height: 30,
+		backgroundColor: '#fff',
+		borderRadius: 50,
+		opacity: 0.3,
 	},
 	title: {
 		marginTop: 8,
@@ -100,12 +139,11 @@ const styles = StyleSheet.create({
 	},
 	messageIcon: {
 		marginRight: 4,
-		color: '#FF6C00',
 		transform: [{ rotateY: '-180deg' }],
 	},
 	thumbUpIcon: {
 		marginRight: 6,
-		color: '#FF6C00',
+		color: '#BDBDBD',
 	},
 	pinIcon: {
 		marginRight: 6,
