@@ -24,20 +24,27 @@ const PostsScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<UserTab />
+			{posts.length === 0 && <UserTab />}
 			<FlatList
 				data={posts}
 				keyExtractor={posts.id}
 				renderItem={({ item }) => (
-					<PostCard
-						key={item.id}
-						description={item.description}
-						place={item.place}
-						location={item.location}
-						photo={item.photo.uri}
-						postId={item.id}
-						commentsLength={item.comments}
-					/>
+					<>
+						<View style={{ marginTop: 20, marginBottom: 10 }}>
+							<UserTab />
+						</View>
+						<View style={{ marginBottom: 10 }}>
+							<PostCard
+								key={item.id}
+								description={item.description}
+								place={item.place}
+								location={item.location}
+								photo={item.photo.uri}
+								postId={item.id}
+								commentsLength={item.comments}
+							/>
+						</View>
+					</>
 				)}
 				showsVerticalScrollIndicator={false}
 			></FlatList>
@@ -50,11 +57,11 @@ export default PostsScreen;
 const styles = StyleSheet.create({
 	container: {
 		width: '100%',
-		flex: 1,
-		alignItems: 'flex-start',
+		// flex: 1,
+		// alignItems: 'flex-start',
 		paddingHorizontal: 16,
-		paddingVertical: 32,
-		gap: 16,
+		// marginBottomBottom: 12,
+		// gap: 16,
 		backgroundColor: '#FFFFFF',
 	},
 });

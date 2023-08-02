@@ -84,7 +84,11 @@ const CommentsScreen = ({ route }) => {
 				}}
 			>
 				<Image
-					source={{ uri: item.avatar }}
+					source={{
+						uri: item.avatar
+							? item.avatar
+							: 'https://firebasestorage.googleapis.com/v0/b/first-react-native-proje-98226.appspot.com/o/userAvatars%2FDefault_pfp.svg.png?alt=media&token=7cafd3a4-f9a4-40f2-9115-9067f5a15f57',
+					}}
 					style={{
 						...styles.avatarIcon,
 						marginLeft: currentUser ? 0 : 15,

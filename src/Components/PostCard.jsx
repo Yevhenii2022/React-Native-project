@@ -1,8 +1,6 @@
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
-import { doc, deleteDoc } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { Feather } from '@expo/vector-icons';
 
 const PostCard = ({
 	description,
@@ -14,20 +12,9 @@ const PostCard = ({
 }) => {
 	const navigation = useNavigation();
 
-	//   видалення поста з профілю
-	const deletePost = async postId => {
-		await deleteDoc(doc(db, 'posts', postId));
-	};
-
 	return (
 		<TouchableOpacity style={styles.container} disabled={true}>
 			<View>
-				<TouchableOpacity
-					style={styles.deletePostBtn}
-					onPress={() => deletePost(postId)}
-				>
-					<MaterialIcons name="close" size={26} color="#212121" />
-				</TouchableOpacity>
 				<Image src={photo} style={styles.photo} />
 				<Text style={styles.title}>{description}</Text>
 			</View>
@@ -82,19 +69,6 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		width: '100%',
 		height: 240,
-	},
-	deletePostBtn: {
-		position: 'absolute',
-		top: 10,
-		right: 10,
-		zIndex: 10,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: 30,
-		height: 30,
-		backgroundColor: '#fff',
-		borderRadius: 50,
-		opacity: 0.3,
 	},
 	title: {
 		marginTop: 8,

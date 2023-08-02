@@ -17,7 +17,7 @@ const UserTab = () => {
 			: 'https://firebasestorage.googleapis.com/v0/b/first-react-native-proje-98226.appspot.com/o/userAvatars%2FDefault_pfp.svg.png?alt=media&token=7cafd3a4-f9a4-40f2-9115-9067f5a15f57';
 
 	return (
-		<TouchableOpacity style={styles.container}>
+		<TouchableOpacity style={styles.container} disabled={true}>
 			<Image src={avatarUser} style={styles.photo} />
 			<View>
 				<Text style={styles.title}>{login}</Text>
