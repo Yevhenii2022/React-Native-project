@@ -25,7 +25,6 @@ import { selectUserData } from '../redux/auth/selectors';
 
 const CommentsScreen = ({ route }) => {
 	const { postId, photo } = route.params;
-
 	const { userId, name, avatar } = useSelector(selectUserData);
 	const [comment, setComment] = useState('');
 	const [allComments, setAllComments] = useState([]);

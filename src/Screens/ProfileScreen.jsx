@@ -30,7 +30,6 @@ const ProfileScreen = () => {
 	const navigation = useNavigation();
 	const { userId, name } = useSelector(selectUserData);
 	const [posts, setPosts] = useState([]);
-	// const dispatch = useDispatch();
 
 	//   відмальовує всі пости на сторінці
 	useEffect(() => {
@@ -53,90 +52,101 @@ const ProfileScreen = () => {
 
 	return (
 		<SafeAreaView>
-			<ImageBackground source={image} style={styles.image} />
-			<ScrollView showsVerticalScrollIndicator={false}>
-				<View style={styles.view}>
-					<View>
-						<View style={styles.viewUserPhoto}>
-							<UserPhoto />
-						</View>
-						<ExitBtn />
-						<Text style={styles.Name}>{name}</Text>
-					</View>
-
-					{posts.length === 0 && (
-						<View style={{ flex: 1, marginTop: 10, paddingHorizontal: 20 }}>
-							<Text style={{ textAlign: 'center' }}>
-								Зараз у тебе немає публікацій, але ти можеш їх створити - тисни
-								на цю кнопку
-							</Text>
-							<TouchableOpacity
-								style={styles.buttonCapture}
-								onPress={() => navigation.navigate('Create')}
-							>
-								<MaterialIcons name="add" size={24} color={'#FFFFFF'} />
-							</TouchableOpacity>
-						</View>
-					)}
-
-					{posts.map(item => (
-						<TouchableOpacity style={{ width: '100%' }} disabled={true}>
-							<View>
-								<TouchableOpacity
-									style={styles.deletePostBtn}
-									onPress={() => deletePost(item.id)}
-								>
-									<MaterialIcons name="close" size={26} color="#212121" />
-								</TouchableOpacity>
-								<Image src={item.photo.uri} style={styles.photo} />
-								<Text style={styles.title}>{item.description}</Text>
+			<ImageBackground source={image} style={styles.image}>
+				<ScrollView showsVerticalScrollIndicator={false}>
+					<View style={styles.view}>
+						<View>
+							<View style={styles.viewUserPhoto}>
+								<UserPhoto />
 							</View>
+							<ExitBtn />
+							<Text style={styles.Name}>{name}</Text>
+						</View>
 
-							<View style={styles.bottomContainer}>
-								<View style={styles.leftSideIcons}>
+						{posts.length === 0 && (
+							<View
+								style={{
+									paddingHorizontal: 40,
+								}}
+							>
+								<Text style={{ textAlign: 'center' }}>
+									Зараз у тебе немає публікацій, але ти можеш їх створити -
+									тисни на цю кнопку
+								</Text>
+								<TouchableOpacity
+									style={styles.buttonCapture}
+									onPress={() => navigation.navigate('Create')}
+								>
+									<MaterialIcons name="add" size={24} color={'#FFFFFF'} />
+								</TouchableOpacity>
+							</View>
+						)}
+
+						{posts.map(item => (
+							<TouchableOpacity
+								key={item.id}
+								style={{ width: '100%' }}
+								disabled={true}
+							>
+								<View>
 									<TouchableOpacity
-										style={styles.barLeft}
-										onPress={() =>
-											navigation.navigate('Comments', {
-												postId: item.id,
-												photo: item.photo.uri,
-											})
-										}
+										style={styles.deletePostBtn}
+										onPress={() => deletePost(item.id)}
 									>
-										<Feather
-											name="message-circle"
-											size={24}
-											style={{
-												...styles.messageIcon,
-												color: item.comments ? '#FF6C00' : '#BDBDBD',
-											}}
-										/>
-										<Text style={styles.barLeftText}>{item.comments || 0}</Text>
+										<MaterialIcons name="close" size={26} color="#212121" />
 									</TouchableOpacity>
-									<View style={styles.barLeft}>
-										<Feather
-											name="thumbs-up"
-											size={24}
-											style={styles.thumbUpIcon}
-										/>
-										<Text style={styles.barLeftText}>0</Text>
-									</View>
+									<Image src={item.photo.uri} style={styles.photo} />
+									<Text style={styles.title}>{item.description}</Text>
 								</View>
 
-								<TouchableOpacity
-									style={styles.barRight}
-									onPress={() =>
-										navigation.navigate('Map', { location: item.location })
-									}
-								>
-									<Feather name="map-pin" size={24} style={styles.pinIcon} />
-									<Text style={styles.barRightText}>{item.place}</Text>
-								</TouchableOpacity>
-							</View>
-						</TouchableOpacity>
-					))}
-				</View>
-			</ScrollView>
+								<View style={styles.bottomContainer}>
+									<View style={styles.leftSideIcons}>
+										<TouchableOpacity
+											style={styles.barLeft}
+											onPress={() =>
+												navigation.navigate('Comments', {
+													postId: item.id,
+													photo: item.photo.uri,
+												})
+											}
+										>
+											<Feather
+												name="message-circle"
+												size={24}
+												style={{
+													...styles.messageIcon,
+													color: item.comments ? '#FF6C00' : '#BDBDBD',
+												}}
+											/>
+											<Text style={styles.barLeftText}>
+												{item.comments || 0}
+											</Text>
+										</TouchableOpacity>
+										<View style={styles.barLeft}>
+											<Feather
+												name="thumbs-up"
+												size={24}
+												style={styles.thumbUpIcon}
+											/>
+											<Text style={styles.barLeftText}>0</Text>
+										</View>
+									</View>
+
+									<TouchableOpacity
+										style={styles.barRight}
+										onPress={() =>
+											navigation.navigate('Map', { location: item.location })
+										}
+									>
+										<Feather name="map-pin" size={24} style={styles.pinIcon} />
+										<Text style={styles.barRightText}>{item.place}</Text>
+									</TouchableOpacity>
+								</View>
+							</TouchableOpacity>
+						))}
+					</View>
+				</ScrollView>
+			</ImageBackground>
 		</SafeAreaView>
 	);
 };
@@ -165,8 +175,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
 	image: {
 		resizeMode: 'cover',
-		height: 750,
-		flex: 1,
+		height: '100%',
 	},
 	Name: {
 		fontFamily: 'Roboto',
@@ -182,14 +191,10 @@ const styles = StyleSheet.create({
 		marginTop: 163,
 		minHeight: 570,
 		backgroundColor: '#ffffff',
-		borderColor: '#ffffff',
-		borderWidth: 5,
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
-		paddingTop: 0,
-		paddingLeft: 16,
-		paddingRight: 16,
-		paddingBottom: 43,
+		paddingHorizontal: 16,
+		paddingBottom: 34,
 		gap: 32,
 	},
 	buttonCapture: {
