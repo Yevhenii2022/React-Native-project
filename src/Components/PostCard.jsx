@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import { db } from '../firebase/config';
+import { doc, updateDoc, collection, onSnapshot } from 'firebase/firestore';
 
 const PostCard = ({
 	description,
@@ -11,6 +14,50 @@ const PostCard = ({
 	commentsLength,
 }) => {
 	const navigation = useNavigation();
+
+	const [likes, setLikes] = useState(null);
+	const [numberOfClicks, setNumberOfClicks] = useState(null);
+
+	useEffect(() => {
+		const dbRef = collection(db, 'posts');
+		onSnapshot(dbRef, data => {
+			const likesFind = data.docs.find(doc => postId === doc.id);
+			setLikes(likesFind.data().likes);
+		});
+	}, []);
+
+	const handleLike = () => {
+		sendLike();
+		setNumberOfClicks(1);
+
+		if (numberOfClicks === 1) {
+			deleteLike();
+			setNumberOfClicks(0);
+		}
+	};
+
+	const sendLike = async () => {
+		try {
+			const postRef = doc(db, 'posts', postId);
+			await updateDoc(postRef, {
+				likes: likes + 1,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const deleteLike = async () => {
+		try {
+			const postRef = doc(db, 'posts', postId);
+			await updateDoc(postRef, {
+				likes: likes - 1,
+			});
+			console.log('The like was successfully deleted.');
+		} catch (error) {
+			console.error('Error when deleting the document:', error);
+		}
+	};
 
 	return (
 		<TouchableOpacity style={styles.container} disabled={true}>
@@ -40,10 +87,17 @@ const PostCard = ({
 						/>
 						<Text style={styles.barLeftText}>{commentsLength || 0}</Text>
 					</TouchableOpacity>
-					<View style={styles.barLeft}>
-						<Feather name="thumbs-up" size={24} style={styles.thumbUpIcon} />
-						<Text style={styles.barLeftText}>0</Text>
-					</View>
+					<TouchableOpacity style={styles.barLeft} onPress={handleLike}>
+						<Feather
+							name="thumbs-up"
+							size={24}
+							style={{
+								...styles.thumbUpIcon,
+								color: likes ? '#FF6C00' : '#BDBDBD',
+							}}
+						/>
+						<Text style={styles.barLeftText}>{likes}</Text>
+					</TouchableOpacity>
 				</View>
 
 				<TouchableOpacity
@@ -117,7 +171,6 @@ const styles = StyleSheet.create({
 	},
 	thumbUpIcon: {
 		marginRight: 6,
-		color: '#BDBDBD',
 	},
 	pinIcon: {
 		marginRight: 6,

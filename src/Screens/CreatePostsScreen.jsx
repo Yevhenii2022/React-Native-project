@@ -134,6 +134,7 @@ const CreatePostsScreen = () => {
 				name,
 				email,
 				avatar,
+				likes: 0,
 			});
 		} catch (error) {
 			console.error('Error adding document: ', error);

@@ -25,10 +25,12 @@ import { authSignOutUser } from '../redux/auth/authOperations';
 import image from '../../assets/photo_BG2x.png';
 import UserPhoto from '../Components/UserPhoto';
 import { selectUserData } from '../redux/auth/selectors';
+import { selectStateLikes } from '../redux/likes/selectors';
 
 const ProfileScreen = () => {
 	const navigation = useNavigation();
 	const { userId, name } = useSelector(selectUserData);
+	const like = useSelector(selectStateLikes);
 	const [posts, setPosts] = useState([]);
 
 	//   відмальовує всі пости на сторінці
@@ -114,7 +116,6 @@ const ProfileScreen = () => {
 												name="message-circle"
 												size={24}
 												style={{
-													...styles.messageIcon,
 													color: item.comments ? '#FF6C00' : '#BDBDBD',
 												}}
 											/>
@@ -126,9 +127,12 @@ const ProfileScreen = () => {
 											<Feather
 												name="thumbs-up"
 												size={24}
-												style={styles.thumbUpIcon}
+												style={{
+													...styles.thumbUpIcon,
+													color: item.likes ? '#FF6C00' : '#BDBDBD',
+												}}
 											/>
-											<Text style={styles.barLeftText}>0</Text>
+											<Text style={styles.barLeftText}>{item.likes}</Text>
 										</View>
 									</View>
 
@@ -255,7 +259,6 @@ const styles = StyleSheet.create({
 	},
 	thumbUpIcon: {
 		marginRight: 6,
-		color: '#BDBDBD',
 	},
 	barLeftText: {
 		color: '#BDBDBD',
