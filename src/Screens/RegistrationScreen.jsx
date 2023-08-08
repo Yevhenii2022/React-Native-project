@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import image from '../../assets/photo_BG2x.png';
@@ -31,7 +30,6 @@ const initialState = {
 const RegistrationScreen = () => {
 	const navigation = useNavigation();
 	const [state, setState] = useState(initialState);
-	// const [avatarUpload, setAvatarUpload] = useState('');
 	const [isShownPasword, setIsShownPasword] = useState(true);
 	const [isFocused, setIsFocused] = useState(null);
 	const [isBtnActive, setIsBtnActive] = useState(false);

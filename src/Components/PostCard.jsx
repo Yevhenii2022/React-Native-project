@@ -19,11 +19,15 @@ const PostCard = ({
 	const [numberOfClicks, setNumberOfClicks] = useState(null);
 
 	useEffect(() => {
-		const dbRef = collection(db, 'posts');
-		onSnapshot(dbRef, data => {
-			const likesFind = data.docs.find(doc => postId === doc.id);
-			setLikes(likesFind.data().likes);
-		});
+		try {
+			const dbRef = collection(db, 'posts');
+			onSnapshot(dbRef, docSnap => {
+				const likesFind = docSnap.docs.find(doc => postId === doc.id);
+				setLikes(likesFind?.data().likes);
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	}, []);
 
 	const handleLike = () => {

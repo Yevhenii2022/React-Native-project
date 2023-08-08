@@ -17,10 +17,14 @@ const PostsScreen = () => {
 
 	//get запрос на firebase всіх постів
 	const getAllPosts = async () => {
-		const dbRef = collection(db, 'posts');
-		onSnapshot(dbRef, docSnap =>
-			setPosts(docSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }))),
-		);
+		try {
+			const dbRef = collection(db, 'posts');
+			onSnapshot(dbRef, docSnap =>
+				setPosts(docSnap.docs.map(doc => ({ ...doc.data(), id: doc.id }))),
+			);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	//відмальовуваємо всі пости на сторінці

@@ -5,7 +5,6 @@ import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
 import { Ionicons, Octicons, Feather } from '@expo/vector-icons';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import * as ImagePicker from 'expo-image-picker';
@@ -73,10 +72,6 @@ const CreatePostsScreen = () => {
 		})();
 	}, []);
 
-	if (hasPermission === null) {
-		return <View />;
-	}
-
 	const pickImage = async () => {
 		try {
 			let result = await ImagePicker.launchImageLibraryAsync({
@@ -97,33 +92,8 @@ const CreatePostsScreen = () => {
 		setPostData(prevState => ({ ...prevState, [type]: value }));
 	};
 
-	// завантаження фото на firebase
-	// const uploadPhotoToServer = async () => {
-	// 	const storage = getStorage();
-	// 	const uniquePostId = Date.now().toString();
-	// 	const storageRef = ref(storage, `images/${uniquePostId}`);
-
-	// 	const response = await fetch(postData.photo);
-	// 	const file = await response.blob();
-
-	// 	await uploadBytes(storageRef, file).then(() => {
-	// 		console.log(`ваше фото завантажено`);
-	// 	});
-	// 	const processedPhoto = await getDownloadURL(
-	// 		ref(storage, `images/${uniquePostId}`),
-	// 	)
-	// 		.then(url => {
-	// 			return url;
-	// 		})
-	// 		.catch(error => {
-	// 			console.log(error);
-	// 		});
-	// 	return processedPhoto;
-	// };
-
 	// завантаження всього допису "post" на firebase
 	const uploadPostToServer = async () => {
-		// const photo = await uploadPhotoToServer();
 		try {
 			const setUserPost = await addDoc(collection(db, 'posts'), {
 				photo: postData.photo,
@@ -151,6 +121,20 @@ const CreatePostsScreen = () => {
 	const handleReset = () => {
 		setPostData(initialPostData);
 		setLocation(null);
+	};
+
+	const takePhoto = async () => {
+		try {
+			setIsLoading('pending');
+			if (cameraRef) {
+				const { uri } = await cameraRef.takePictureAsync();
+				const asset = await MediaLibrary.createAssetAsync(uri);
+				handlePostData('photo', asset);
+				setIsLoading('fullfield');
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -185,23 +169,11 @@ const CreatePostsScreen = () => {
 								</TouchableOpacity>
 								{hasPermission && (
 									<TouchableOpacity
-										disabled={isLoading === 'pending' ? true : false}
+										disabled={
+											isLoading === 'pending' || postData.photo ? true : false
+										}
 										style={styles.photoButton}
-										onPress={async () => {
-											try {
-												setIsLoading('pending');
-												if (cameraRef) {
-													const { uri } = await cameraRef.takePictureAsync();
-													const asset = await MediaLibrary.createAssetAsync(
-														uri,
-													);
-													handlePostData('photo', asset);
-													setIsLoading('fullfield');
-												}
-											} catch (error) {
-												console.log(error);
-											}
-										}}
+										onPress={takePhoto}
 									>
 										{isLoading === 'idle' && (
 											<Ionicons

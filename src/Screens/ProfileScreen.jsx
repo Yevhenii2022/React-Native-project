@@ -25,12 +25,10 @@ import { authSignOutUser } from '../redux/auth/authOperations';
 import image from '../../assets/photo_BG2x.png';
 import UserPhoto from '../Components/UserPhoto';
 import { selectUserData } from '../redux/auth/selectors';
-import { selectStateLikes } from '../redux/likes/selectors';
 
 const ProfileScreen = () => {
 	const navigation = useNavigation();
 	const { userId, name } = useSelector(selectUserData);
-	const like = useSelector(selectStateLikes);
 	const [posts, setPosts] = useState([]);
 
 	//   відмальовує всі пости на сторінці
