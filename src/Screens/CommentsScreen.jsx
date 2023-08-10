@@ -7,8 +7,6 @@ import {
 	StyleSheet,
 	TextInput,
 	TouchableOpacity,
-	TouchableWithoutFeedback,
-	Keyboard,
 	ImageBackground,
 	FlatList,
 } from 'react-native';
@@ -125,41 +123,39 @@ const CommentsScreen = ({ route }) => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<View style={styles.container}>
-					<FlatList
-						ListHeaderComponent={
-							<ImageBackground
-								source={{ uri: photo }}
-								style={styles.imageBackground}
-							/>
-						}
-						data={allComments}
-						keyExtractor={allComments.id}
-						renderItem={renderItem}
-						showsVerticalScrollIndicator={false}
-					/>
-					<View>
-						<TextInput
-							value={comment}
-							onChangeText={setComment}
-							placeholder="Коментувати..."
-							style={{
-								...styles.submitBtn,
-								fontFamily: 'Roboto',
-							}}
+			<View style={styles.container}>
+				<FlatList
+					ListHeaderComponent={
+						<ImageBackground
+							source={{ uri: photo }}
+							style={styles.imageBackground}
 						/>
+					}
+					data={allComments}
+					keyExtractor={allComments.id}
+					renderItem={renderItem}
+					showsVerticalScrollIndicator={false}
+				/>
+				<View>
+					<TextInput
+						value={comment}
+						onChangeText={setComment}
+						placeholder="Коментувати..."
+						style={{
+							...styles.submitBtn,
+							fontFamily: 'Roboto',
+						}}
+					/>
 
-						<TouchableOpacity
-							style={styles.addCommentBtn}
-							activeOpacity={0.7}
-							onPress={createComment}
-						>
-							<AntDesign name="arrowup" size={24} color="#FFFFFF" />
-						</TouchableOpacity>
-					</View>
+					<TouchableOpacity
+						style={styles.addCommentBtn}
+						activeOpacity={0.7}
+						onPress={createComment}
+					>
+						<AntDesign name="arrowup" size={24} color="#FFFFFF" />
+					</TouchableOpacity>
 				</View>
-			</TouchableWithoutFeedback>
+			</View>
 		</View>
 	);
 };

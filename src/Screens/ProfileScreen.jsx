@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
 	},
 	view: {
 		marginTop: 163,
-		minHeight: 570,
+		minHeight: 590,
 		backgroundColor: '#ffffff',
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,

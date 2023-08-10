@@ -60,6 +60,7 @@ const LoginScreen = () => {
 									style={[styles.input, isFocused === 'email' && styles.active]}
 									onChangeText={value => handleSetState('email', value)}
 									value={state.email}
+									autoCapitalize="none"
 									inputMode="email"
 									placeholderTextColor="#BDBDBD"
 								/>
@@ -75,6 +76,7 @@ const LoginScreen = () => {
 										onChangeText={value => handleSetState('password', value)}
 										value={state.password}
 										textContentType="password"
+										autoCapitalize="none"
 										placeholderTextColor="#BDBDBD"
 										secureTextEntry={isShownPasword}
 									/>

@@ -117,6 +117,7 @@ const RegistrationScreen = () => {
 									onChangeText={value => handleSetState('email', value)}
 									value={state.email}
 									inputMode="email"
+									autoCapitalize="none"
 									placeholderTextColor="#BDBDBD"
 								/>
 								<View style={styles.inputPassword}>
@@ -131,6 +132,7 @@ const RegistrationScreen = () => {
 										onChangeText={value => handleSetState('password', value)}
 										value={state.password}
 										textContentType="password"
+										autoCapitalize="none"
 										placeholderTextColor="#BDBDBD"
 										secureTextEntry={isShownPasword}
 									/>
