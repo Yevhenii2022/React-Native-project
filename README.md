@@ -21,7 +21,7 @@ This app is a social networking application for uploading photos </br> with the 
 
 [product-screenshot]: ./assets/screenshots/RN-project.png
 
-<div style="display: flex; flex-direction: row; flex-wrap:wrap; gap:20px">
+<div style="display: flex; flex-direction: row; flex-wrap:wrap; gap:30px">
 <img src="./assets/screenshots/реєстрація.jpg" alt="реєстрація" width="250" >
 <img src="./assets/screenshots/логін.jpg" alt="логін" width="250" >
 <img src="./assets/screenshots/публікації_пусті.jpg" alt="публікації_пусті" width="250" >
